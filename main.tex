@@ -101,6 +101,12 @@ Twelve additional synapomorphies define the clade~2\,+\,L6/L9/L10 node
 (including \textit{eccB3} in ESX-3 and \textit{plsB2} in lipid biosynthesis),
 while only 4~SPDIs are truly exclusive to L6/L9/L10, suggesting that
 secondary human re-adaptation required minimal genomic innovation.
+Comparison with the second animal clade (clade~1: Bovis/Caprae/Orygis/La4/Microti/Pinnipedii;
+$n = 529$; 427~core SPDIs, 2~truly exclusive) reveals zero shared IS activity
+(0.0\% vs 2.1\%) but striking pathway-level convergence: 33 of 40~clade~1
+convergent genes (82.5\%) are also convergent in clade~2, predominantly in
+PKS/PDIM and signal transduction pathways.
+%
 Notably, no synapomorphic variants could be identified for the strict
 human clade (L1--L4--L7), reflecting the reference bias inherent to SNP
 calling against the L4-derived H37Rv genome.
@@ -792,6 +798,111 @@ Convergent genes & \multicolumn{2}{c}{\textbf{0} --- entirely non-overlapping ta
 \end{tabular}
 \end{table}
 
+\paragraph{Functional profile of the clade~1 core.}
+Annotation of the 427~clade~1 core SPDIs reveals a functional composition
+broadly similar to clade~2: 213~missense (49.9\%), 129~synonymous (30.2\%),
+67~intergenic (15.7\%), and 14~LoF (12~frameshifts, 2~nonsense), yielding a
+dN/dS proxy of 1.65 --- identical to clade~2.
+%
+Among the 14~LoF mutations, several target genes also disrupted in clade~2 or the
+grand-clade core: \textit{ald}~(Rv2780; L-alanine dehydrogenase, dormancy),
+\textit{cobL}~(Rv2072c; vitamin~B12 synthesis), and \textit{ctpI}~(Rv0107c; cation
+transport). Two additional LoF mutations are clade~1-specific:
+\textit{pstA1}~R305* (Rv0930; phosphate transport) and
+\textit{lpdA}~C472* (Rv3303c; dihydrolipoamide dehydrogenase), suggesting
+distinct metabolic streamlining in each animal clade.
+%
+Notably, PE/PPE genes represent only 0.9\% of the clade~1 core (4~SPDIs),
+compared to 6.6\% (60~SPDIs) in clade~2, indicating a markedly lower
+PE/PPE diversification pressure in clade~1.
+
+\paragraph{ESX and PKS/PDIM systems in clade~1.}
+Clade~1 carries 7~ESX SPDIs across four of five systems (ESX-1: 2,
+ESX-3: 2, ESX-4: 1, ESX-5: 2), none LoF --- recapitulating the ``remodelling
+without destruction'' pattern observed in clade~2, albeit at lower intensity
+(7 vs 24~SPDIs).
+%
+ESX-3 is independently modified in both clades but at different positions:
+\textit{eccA3}~E6A and \textit{eccC3}~P214R in clade~1 versus the
+clade~2-exclusive \textit{eccC3}~D1146N (Walker~B motif), suggesting
+convergent ESX-3 retuning through non-overlapping substitutions.
+%
+The PKS/PDIM pathway carries 10~core clade~1 SPDIs (vs~98 in clade~2),
+all non-LoF. Strikingly, two are shared with clade~2:
+\textit{drrA}~H309D (ABC transporter) and \textit{ppsA}~D624E (PDIM
+synthase), confirming their grand-clade ancestral origin. The additional
+clade~1-specific PKS variants (\textit{ppsE}~N1101D, \textit{pks6}~R1402P)
+indicate independent fine-tuning of lipid biosynthesis in each clade.
+%
+IS element activity in the clade~1 core is 0.0\% (0/427~SPDIs), matching
+the human lineages rather than the 2.1\% observed in clade~2. This suggests
+that the IS6110-driven genomic instability is a clade~2-specific phenomenon,
+not a general feature of animal-adapted MTBC.
+
+\paragraph{Ancestry stratification of the 238 clade~1-differentiating SPDIs.}
+Of the 427~clade~1 core SPDIs, 238 are absent from the L6/L9/L10 core
+(``clade~1-differentiating'').
+%
+Ancestry stratification reveals that 178 (74.8\%) are ancestral
+(\textit{M.~canettii}-positive), 11 (4.6\%) are derived but shared with
+strict human lineages, 12 (5.0\%) are shared with L5, and 35 (14.7\%)
+are present in some L6/L9/L10 strains but not in their core.
+%
+Only \textbf{2~SPDIs} (0.8\%) are truly exclusive to clade~1, compared
+to 23 (2.5\%) for clade~2.
+The higher proportion of ancestral variants in clade~1 (74.8\% vs 68\%)
+is consistent with its larger species count constraining the core to the
+deepest-rooting mutations (Table~\ref{tab:c1_vs_c2}).
+
+\paragraph{Convergent evolution within clade~1.}
+After removing the 427~core SPDIs, 40~genes carry independent mutations in
+all six clade~1 species, 165~additional genes in five of six, and
+98~in four of six.
+%
+Compared to clade~2's 333-gene convergent set, the reduced count in
+clade~1 (40 vs 333 at the all-species threshold) is expected: with six
+species instead of four, the probability that any gene is independently
+hit in every lineage decreases.
+%
+Remarkably, \textbf{33 of the 40~clade~1 convergent genes} (82.5\%) are
+also convergent in clade~2, including lipid metabolism genes
+(\textit{ppsA}, \textit{ppsE}, \textit{pks12}, \textit{fadH}, \textit{fadD5},
+\textit{fas}), signal transduction phosphatases (\textit{pstP}, \textit{stp},
+\textit{tcrY}), PE/PPE proteins (\textit{PPE8}), and DNA gyrase
+(\textit{gyrA}, \textit{gyrB}).
+%
+This extensive overlap demonstrates that convergent evolution operates not
+only within each clade but also \emph{between} the two independent animal
+clades, targeting the same functional pathways ---
+predominantly lipid biosynthesis and signal transduction ---
+through non-identical mutations.
+
+\begin{table}[h]
+\centering
+\caption{Head-to-head comparison of the two animal clades.}
+\label{tab:c1_vs_c2}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Metric & \textbf{Clade~1} & \textbf{Clade~2} \\
+\midrule
+Species & 6 & 4 \\
+Genomes & 529 & 26 \\
+Core SPDIs & 427 & \num{1292} \\
+Differentiating (vs L6/L9/L10) & 238 & 904 \\
+Truly exclusive & 2 & 23 \\
+Ancestral (\textit{canettii}+) & 178 (74.8\%) & 616 (68\%) \\
+LoF mutations & 14 & 40 \\
+ESX SPDIs (LoF) & 7 (0) & 24 (0) \\
+PKS/PDIM SPDIs (LoF) & 10 (0) & 98 (0) \\
+PE/PPE SPDIs & 4 (0.9\%) & 60 (6.6\%) \\
+Convergent genes (all spp.) & 40 & 333 \\
+\quad of which shared between clades & \multicolumn{2}{c}{33 (82.5\%)} \\
+IS activity & 0.0\% & 2.1\% \\
+dN/dS proxy & 1.65 & 1.65 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Relationship between clade~2 and the secondarily human-adapted lineages}
 \label{sec:results:c2_vs_l6l9l10}
 
@@ -1149,7 +1260,7 @@ PPE55 IS6110 hotspot (68.4\% activity) & No prior reports of IS6110-PE/PPE targe
 333 convergent genes (8.3\% genome) & Convergent evolution: ~50-200 genes typical \cite{Marvig2015} & Largest bacterial pathogen convergent gene set described & High \\
 10 grand-clade synapomorphies & Clade-defining SNPs not systematically catalogued & First SNP-level synapomorphy of the L5/animal/L6--L9--L10 branch & High \\
 23 truly animal-exclusive SPDIs (clade~2) & Animal core defined by RD deletions only \cite{Brosch2002} & First ancestry-stratified SNP synapomorphy of clade~2 & High \\
-0 convergent genes between animal clades & Animal clades assumed to share common adaptations & Phenotypic convergence via non-overlapping genomic routes & Complete \\
+33/40 convergent genes shared between clades & Animal clades assumed to share common adaptations & Pathway-level convergence (PKS, phosphatases) despite gene-level divergence & Complete \\
 12 synapomorphies of C2\,+\,L6/L9/L10 node & No SNP-level markers for this branching point & First definition including \textit{eccB3} (ESX-3) and \textit{plsB2} (lipids) & High \\
 4 truly L6/L9/L10-exclusive SPDIs & Secondary human adaptation assumed to require many changes & Minimal genomic innovation for host re-switching & High \\
 \bottomrule
@@ -1490,28 +1601,43 @@ Clade~2, in contrast, shows 23~innovations including type-VII secretion
 (\textit{eccC3}~D1146N in the ESX-3 ATPase), core transcriptional machinery
 (\textit{rpoA}~V325F), and host cholesterol metabolism (\textit{hsaB}~A168G).
 %
-The absence of any convergently targeted gene between the two exclusive sets
-is notable given that both clades face analogous selective pressures as
-animal-restricted pathogens, and contrasts sharply with the 333-gene
-convergent signal observed \emph{within} clade~2 across its four species.
+While the two clades' \emph{exclusive} synapomorphies target entirely
+non-overlapping gene sets, the convergence analysis reveals a deeper layer
+of similarity: 33 of the 40~genes convergently mutated in all six clade~1
+species (82.5\%) are also convergently mutated across clade~2, including
+\textit{ppsA}, \textit{pks12}, \textit{fadH} (lipid metabolism),
+\textit{pstP}, \textit{stp}, \textit{tcrY} (signal transduction), and
+\textit{gyrA}/\textit{gyrB} (DNA topology).
+%
+This result demonstrates that convergent evolution operates at two distinct
+levels: (1)~at the gene level, where individual substitutions are
+clade-specific and non-overlapping; and (2)~at the pathway level, where
+the same metabolic and regulatory systems are independently targeted in
+both clades through entirely different mutations.
 
-This pattern has two important implications.
+This distinction has three important implications.
 %
-First, it suggests that the selective pressures driving animal host adaptation
-operate at the pathway level (lipid remodelling, immune evasion, intracellular
-survival) rather than at the level of individual genes, allowing multiple
-molecular solutions to the same ecological challenge.
+First, the pathway-level convergence between clades (PKS/PDIM, phosphatase
+signalling) confirms that these functional systems are under genuine
+adaptive pressure during animal host specialization, rather than merely
+accumulating neutral variation.
 %
-Second, it reinforces the view that ``animal-adapted MTBC'' is not a monolithic
-ecotype but rather a paraphyletic assemblage of independently evolving lineages
-whose convergence is phenotypic --- restricted host range, reduced human
-transmissibility --- rather than genomic.
+Second, the gene-level divergence reinforces the view that ``animal-adapted
+MTBC'' is not a monolithic ecotype but rather a paraphyletic assemblage of
+independently evolving lineages whose convergence is phenotypic --- restricted
+host range, reduced human transmissibility --- rather than genomic.
+%
+Third, the absence of IS element activity in clade~1 (0.0\% vs 2.1\% in
+clade~2) indicates that IS6110-driven genomic instability is a
+clade~2-specific phenomenon rather than a universal feature of animal
+adaptation, suggesting that PE/PPE diversification in clade~1 proceeds
+through other mechanisms.
 %
 The striking asymmetry in clade-specific synapomorphies (2 for clade~1 vs~23
 for clade~2), despite substantially deeper sampling of clade~1
 (529 vs~26~genomes), suggests that the six-species clade~1 core is heavily
 constrained: with more species in the intersection, most derived variants
-are diluted away, leaving only the deepest-rooting mutations.
+are diluted away, leaving only the deepest-rooting mutations (Table~\ref{tab:c1_vs_c2}).
 %
 Clade~2, with fewer but more divergent species, retains more of its
 branch-defining variants in the core.
@@ -1757,8 +1883,10 @@ ancestral-state reconstruction.
 The inter-clade comparison reveals that the two animal clades share no
 exclusive genomic identity beyond the grand-clade ancestral background:
 their 2 and 23 truly exclusive synapomorphies target entirely
-non-overlapping gene sets, demonstrating that animal host adaptation is
-phenotypically convergent but genomically divergent.
+non-overlapping gene sets, yet 33 of the 40~clade~1 convergent genes
+are also convergent in clade~2, demonstrating that animal host adaptation
+is phenotypically convergent at the pathway level (PKS/PDIM, signal
+transduction) but genomically divergent at the gene level.
 %
 Furthermore, the clade~2\,+\,L6/L9/L10 sister relationship is defined by
 12~node synapomorphies (including \textit{eccB3} and \textit{plsB2}), while
