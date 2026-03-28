@@ -95,8 +95,12 @@ enriched for polyketide synthase genes.
 Phylogenetic clade signature analysis identifies 10~synapomorphic SPDIs
 defining the grand clade (L5~+ animal lineages~+ L6/L9/L10), including
 functionally impactful frameshifts in \textit{ald} (L-alanine dehydrogenase)
-and \textit{cyp142} (cholesterol-metabolising cytochrome~P450), alongside
-14~L6/L9/L10-exclusive SPDIs marking secondary human adaptation.
+and \textit{cyp142} (cholesterol-metabolising cytochrome~P450).
+%
+Twelve additional synapomorphies define the clade~2\,+\,L6/L9/L10 node
+(including \textit{eccB3} in ESX-3 and \textit{plsB2} in lipid biosynthesis),
+while only 4~SPDIs are truly exclusive to L6/L9/L10, suggesting that
+secondary human re-adaptation required minimal genomic innovation.
 Notably, no synapomorphic variants could be identified for the strict
 human clade (L1--L4--L7), reflecting the reference bias inherent to SNP
 calling against the L4-derived H37Rv genome.
@@ -165,10 +169,16 @@ modern MTBC diversity through recurrent adaptation and counter-adaptation
 across mammalian host species.
 
 Previous genomic studies of the animal-adapted MTBC have focused principally on
-\textit{M.~bovis} and \textit{M.~caprae}, which were excluded from the present
-analysis as they belong to a distinct phylogenetic subgroup \cite{Brosch2002}.
+\textit{M.~bovis} and \textit{M.~caprae}, which belong to a distinct
+phylogenetic subgroup (clade~1) \cite{Brosch2002}.
 %
-For the four primarily animal-adapted lineages considered here,
+The present study focuses primarily on clade~2
+(Suricattae/Dassie/Mungi/Chimpanzé) for the core and functional analyses,
+while inter-clade comparisons with clade~1
+(Bovis/Caprae/Orygis/La4/Microti/Pinnipedii) are presented in dedicated
+sections.
+%
+For the four primarily animal-adapted lineages of clade~2,
 characterisation has been limited to the definition of species-specific
 Regions of Difference (RD) \cite{Parsons2008, Roos2012, Fabre2010},
 spoligotype profiles, and broad phylogenetic placement \cite{Coll2014, Boritsch2016, Brites2018}.
@@ -325,6 +335,29 @@ strains (5--7 per lineage).
 %
 Tree visualisation was performed with ETE3 \cite{Huerta-Cepas2016}.
 
+\subsection{Inter-clade and node-level comparisons}
+\label{sec:methods:inter_clade}
+
+To compare the two animal clades, core SPDIs were computed for clade~1
+(\textit{M.~bovis} $n = 71$; \textit{M.~caprae} $n = 178$;
+\textit{M.~orygis} $n = 218$; La4 $n = 21$; \textit{M.~microti} $n = 29$;
+\textit{M.~pinnipedii} $n = 12$; total $n = 529$) and clade~2
+(Suricattae/Dassie/Mungi/Chimpanzé; $n = 26$) using the intersection of
+all available strains per species.
+%
+Truly exclusive SPDIs for each clade were identified by filtering against
+all non-animal MTBC lineages (L1--L4 with $>$50~sub-lineages, L5, L7,
+L6/L9/L10, and \textit{M.~canettii}).
+
+Synapomorphies of the clade~2\,+\,L6/L9/L10 node were defined as SPDIs
+present in both the clade~2 core and the L6/L9/L10 core (intersection of
+L6, L9, L10) while absent from clade~1 (union of all species cores), L5,
+all strict human lineages, and \textit{M.~canettii}.
+%
+Per-species validation was performed for all ``group-exclusive'' SPDIs to
+distinguish variants truly absent from all species in a group from those
+excluded from the core by a single outlier species.
+
 \subsection{Robustness analysis}
 \label{sec:methods:robust}
 
@@ -356,14 +389,17 @@ strict human-adapted L1--L4 lineages.
 \subsection{Core genome signatures of the animal clade}
 \label{sec:results:core}
 
-The animal clade core comprises \num{1292} SPDIs, of which 904 are absent
+The clade~2 (Suricattae/Dassie/Mungi/Chimpanzé) core comprises
+\num{1292} SPDIs, of which 904 are absent
 from the secondarily human-adapted core (L6/L9/L10 intersection;
 Table~\ref{tab:core_summary}).
 %
 The ancestral core shared between animal and secondarily human-adapted clades totals 388~SPDIs.
 %
-Conversely, only 14 SPDIs are exclusive to the secondarily human-adapted clade, nine of which
-are absent from any animal lineage.
+Conversely, only 14 SPDIs are in the L6/L9/L10 core but absent from the
+clade~2 core. Per-species validation
+(Section~\ref{sec:results:c2_vs_l6l9l10}) shows that only 4 of these are
+genuinely absent from all four clade~2 species.
 
 \label{sec:results:stratification}
 \paragraph{Ancestry stratification of the 904 animal-differentiating SPDIs.}
@@ -937,9 +973,10 @@ The human trajectory involved a contrasting ``genomic stabilization'' event,
 characterized by complete cessation of IS activity. The 10~grand-clade
 synapomorphies, including frameshifts in \textit{ald} and \textit{cyp142},
 mark the ancestral divergence of the L5/animal/L6--L9--L10 branch from
-the strict human clade, while 14~L6/L9/L10-exclusive SPDIs
-(including \textit{stp} frameshift and \textit{Csm6} Q304* nonsense)
-represent the molecular signatures of secondary human re-adaptation.
+the strict human clade, while 12~synapomorphies define the
+clade~2\,+\,L6/L9/L10 node and only 4~SPDIs are truly exclusive to
+L6/L9/L10, representing a minimal genomic signature of secondary human
+re-adaptation.
 L5 occupies a basal position within the grand clade, with 192~unique
 SPDIs reflecting its long independent evolution, and likely represents
 the transitional state between generalist and human-specialist forms.
@@ -962,8 +999,10 @@ in bacterial pathogens (typically 50--200 genes in \textit{Pseudomonas aeruginos
 \cite{Marvig2015}), the 333-gene convergent set identified here represents an
 exceptional 8.3\% of the MTBC genome, suggesting unusually strong selective
 pressures during animal host specialization. The 10~grand-clade synapomorphies define the deepest split within MTBC
-after the root, and the 14~L6/L9/L10-exclusive SPDIs provide the first
-SNP-level molecular markers of secondary human adaptation.
+after the root, the 12~clade~2\,+\,L6/L9/L10 node synapomorphies define
+the branching point between animal-adapted and secondarily human-adapted
+lineages, and the 4~truly L6/L9/L10-exclusive SPDIs mark the minimal
+genomic signature of secondary human adaptation.
 
 \subsection{Complex phylogenetic topology reveals multiple host-jumping events}
 \label{sec:disc:complex_phylogeny}
@@ -992,7 +1031,8 @@ phylogenetic separation from strict human lineages, the molecular signatures
 of convergent adaptation toward human transmission observed in both L6/L9/L10
 and L1--L4, and the apparent asymmetric burden of animal-differentiating variants
 (904 SPDIs, of which 23 truly exclusive) versus secondarily human-adapted
-exclusive variants (14 SPDIs), although rarefaction analysis shows this
+exclusive variants (14 nominal, 4 truly exclusive), although rarefaction
+analysis shows this
 asymmetry is largely driven by differential sampling depth
 (Section~\ref{sec:disc:limits}).
 
@@ -1000,8 +1040,10 @@ The genomic evidence supporting this secondary adaptation hypothesis includes:
 (1) the 10~grand-clade synapomorphies shared by L5, both animal clades, and
 L6/L9/L10 but absent from L1--L4/L7 and \textit{M.~canettii}, confirming
 that L6/L9/L10 belong to the same major branch as the animal lineages;
-(2) the 14~L6/L9/L10-exclusive SPDIs marking the genomic modifications
-acquired during re-adaptation to human transmission; and (3) the transitional
+(2) the 12~synapomorphies of the clade~2\,+\,L6/L9/L10 node (including
+\textit{eccB3} and \textit{plsB2}), with only 4~truly L6/L9/L10-exclusive
+SPDIs marking the minimal genomic modifications acquired during
+re-adaptation to human transmission; and (3) the transitional
 genomic composition of these lineages showing intermediate characteristics
 between animal and strict human adaptations.
 This complex phylogenetic framework fundamentally revises our understanding
@@ -1059,7 +1101,7 @@ $\sim$70{,}000~years ago and the animal--human divergence at
 $\sim$50{,}000~years ago \cite{Comas2013}, predating the major demographic
 transitions associated with agriculture. Within this framework, the
 10~grand-clade synapomorphies mark the deep split shared by L5, animal
-lineages, and L6/L9/L10, while the 14~L6/L9/L10-exclusive SPDIs likely
+lineages, and L6/L9/L10, while the 4~truly L6/L9/L10-exclusive SPDIs likely
 arose during the subsequent secondary human adaptation. Precise dating of
 intermediate nodes remains uncertain and will require dedicated Bayesian
 phylogenomic analyses with broader taxon sampling.
@@ -1152,8 +1194,9 @@ intermediary metabolism \& respiration (146 SPDIs, 16.1\%), cell wall
 metabolism (53 SPDIs, 5.9\%).
 %
 This profile differs markedly from the secondarily human-adapted clade, which harbours
-only 14 lineage-exclusive SPDIs at full sampling depth ($n = 1{,}132$) ---
-nine of which are absent from any animal lineage --- although rarefaction
+only 14 SPDIs absent from the clade~2 core at full sampling depth
+($n = 1{,}132$), of which only 4 are truly absent from all four clade~2
+species --- although rarefaction
 analysis demonstrates that this asymmetry is largely attributable to the
 44-fold difference in sampling depth between the two clades
 (Section~\ref{sec:disc:limits}).
@@ -1546,19 +1589,25 @@ and its downstream regulation of lipid biosynthesis \cite{Dey2010}.
 \textit{vapC48} p.G34R (Rv3697c) affects a toxin component of the
 toxin--antitoxin system implicated in persistence and dormancy regulation.
 
-The 14~L6/L9/L10-exclusive SPDIs represent the molecular signatures
-acquired during secondary human re-adaptation.
+Per-species validation (Section~\ref{sec:results:c2_vs_l6l9l10}) reveals
+that only 4 of the 14~SPDIs nominally exclusive to the L6/L9/L10 core are
+genuinely absent from all four clade~2 species; the remaining 10 are present
+in three of the four species and are excluded from the clade~2 core by
+single-species losses.
 %
-Among these, the \textit{stp} (Rv2333c) frameshift disrupts a
-serine/threonine phosphatase that regulates cell-division and virulence
-signalling \cite{Bach2008}, and \textit{Csm6} (Rv2818c) p.Q304* truncates
-a CRISPR-associated RNase, potentially altering the CRISPR defence system
-of these lineages.
+The \textit{stp} (Rv2333c) frameshift, a serine/threonine phosphatase
+regulating cell-division and virulence signalling \cite{Bach2008}, is
+absent only from \Mchi{}, while \textit{Csm6} (Rv2818c)~Q304*, a
+CRISPR-associated nonsense mutation, is absent only from \Msur{}.
 %
-The small number of L6/L9/L10-exclusive variants (14 SPDIs) compared to
-the animal-differentiating core (904 SPDIs) reflects the relatively recent
-secondary adaptation event and the minimal genomic modifications required
-for the animal-to-human host transition.
+These variants are thus better interpreted as ancestral features of the
+clade~2\,+\,L6/L9/L10 node that individual clade~2 species have
+independently lost, rather than as markers of secondary human adaptation.
+%
+The truly L6/L9/L10-exclusive signature reduces to 4~SPDIs (one missense
+in \textit{lpqF}, two synonymous, one intergenic), underscoring that
+secondary human re-adaptation involved remarkably little clade-specific
+genomic innovation.
 
 The 192~L5-specific SPDIs confirm the long independent evolution of L5
 since its divergence from the rest of the grand clade.
@@ -1655,7 +1704,7 @@ This phylogenetic breakthrough, supported by convergent evidence from molecular
 signatures, temporal calibration, and geographic distribution patterns,
 establishes a new evolutionary framework where the primarily animal-adapted
 clade (characterised by 904 differentiating variants, 23 truly exclusive) and the
-secondarily human-adapted lineages (14 exclusive variants at full depth,
+secondarily human-adapted lineages (4 truly exclusive variants,
 noting sampling-depth bias; Section~\ref{sec:disc:limits})
 represent distinct evolutionary solutions to host specialization.
 %
@@ -1677,16 +1726,16 @@ The convergent evolution analysis provides particularly strong evidence for the
 role of lipid metabolism as an adaptive axis: 333 genes (8.3\% of the genome),
 dominated by polyketide synthase family members, carry independent mutations
 in all four animal lineages---representing the largest documented convergent
-gene set in bacterial pathogen evolution. This exceptional scale of convergence,
-with dN/dS proxies consistent with positive selection in
-the PDIM core synthases alongside relaxed purifying selection in auxiliary PKS
-enzymes.
+gene set in bacterial pathogen evolution. This exceptional scale of convergence is accompanied by dN/dS proxies
+consistent with positive selection in the PDIM core synthases alongside
+relaxed purifying selection in auxiliary PKS enzymes.
 %
 The 10~grand-clade synapomorphies --- including frameshifts in \textit{ald}
 and \textit{cyp142} --- provide robust phylogenetic markers defining the
-deepest intra-MTBC split after the root divergence. The 14~L6/L9/L10-exclusive
-SPDIs, including the \textit{stp} frameshift and \textit{Csm6} Q304*
-nonsense, mark the molecular events of secondary human re-adaptation.
+deepest intra-MTBC split after the root divergence. The
+12~clade~2\,+\,L6/L9/L10 node synapomorphies and the 4~truly
+L6/L9/L10-exclusive SPDIs together delineate the molecular events
+surrounding secondary human re-adaptation.
 The absence of detectable synapomorphies for the strict human clade reflects
 the inherent reference bias of H37Rv-based variant calling, a methodological
 limitation that should be addressed in future studies using outgroup-rooted
