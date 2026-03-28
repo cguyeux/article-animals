@@ -218,22 +218,35 @@ a curated database of \num{274800} \textit{M.~tuberculosis} complex genomes with
 standardised SPDI-format variant calls referenced to H37Rv (NC\_000962.3)
 \cite{Guyeux2024}.
 
-Five groups were defined for comparative analysis
+The MTBC animal lineages fall into two phylogenetically distinct clades
+within the grand clade. Six groups were defined for comparative analysis
 (Table~\ref{tab:groups}):
 %
 \begin{enumerate}
-  \item \textbf{Animal clade} (\textit{Suricattae} $n = 17$;
-        \textit{Mungi} $n = 1$; \textit{Dassie} $n = 7$;
-        \textit{Chimpanzé} $n = 1$; total $n = 26$).
+  \item \textbf{Animal clade~2} (\textit{M.~suricattae} $n = 17$;
+        \textit{M.~mungi} $n = 1$; \textit{M.~dassievlei} $n = 7$;
+        \textit{M.~chimpanzae} $n = 1$; total $n = 26$).
+        This clade is the primary focus of the core genome, functional,
+        and convergence analyses.
+  \item \textbf{Animal clade~1} (\textit{M.~bovis} $n = 71$;
+        \textit{M.~caprae} $n = 178$; \textit{M.~orygis} $n = 218$;
+        La4 $n = 21$; \textit{M.~microti} $n = 29$;
+        \textit{M.~pinnipedii} $n = 12$; total $n = 529$).
+        This clade is included in inter-clade comparisons
+        (Section~\ref{sec:methods:inter_clade}).
   \item \textbf{Secondarily human-adapted clade} (L6 $n = 1{,}089$; L9 $n = 40$;
         L10 $n = 3$; total $n = 1{,}132$).
   \item \textbf{Strict human lineages} (L1--L4 and L7; five representative
         strains per sub-lineage for L1--L4, H37Rv excluded;
         L7 $n = 81$).
   \item \textbf{L5} ($n = 443$; basal position within the grand clade).
-  \item \textbf{Ancestral core}: intersection of animal and secondarily human-adapted
-        clades ($n = 388$ SPDIs).
+  \item \textbf{Ancestral core}: intersection of clade~2 and secondarily
+        human-adapted clades ($n = 388$ SPDIs).
 \end{enumerate}
+
+Unless otherwise specified, ``animal clade'' in this paper refers to
+clade~2 (Suricattae/Dassie/Mungi/Chimpanzé), which is the sister group
+of L6/L9/L10 within the grand clade.
 
 \subsection{Core SPDI analysis}
 \label{sec:methods:spdi}
