@@ -1,0 +1,1928 @@
+%% Article : Comparative genomics of animal vs human MTBC lineages
+%% Structure initiale — 2026-03-26
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{authblk}
+\usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[numbers,sort&compress]{natbib}
+
+\geometry{margin=2.5cm}
+
+% Helpers
+\newcommand{\Mtb}{\textit{M.~tuberculosis}}
+\newcommand{\MTBCfull}{\textit{Mycobacterium tuberculosis} complex (MTBC)}
+\newcommand{\MTBC}{MTBC}
+\newcommand{\Msur}{\textit{M.~suricattae}}
+\newcommand{\Mmun}{\textit{M.~mungi}}
+\newcommand{\Mdas}{\textit{M.~dassievlei}}
+\newcommand{\Mchi}{\textit{M.~chimpanzae}}
+\newcommand{\todo}[1]{\textbf{\textcolor{red}{[TODO: #1]}}}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\title{Phylogenomic signatures of multi-host adaptation in the \MTBC:\\
+Convergent PKS/PDIM remodelling in animal lineages\\
+and secondary human re-adaptation of L6/L9/L10}
+
+\author[1]{Christophe Guyeux}
+\affil[1]{FEMTO-ST Institute, Univ.\ Bourgogne Franche-Comté, CNRS, Supmicrotech,
+          Belfort, France}
+
+\date{\today}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\begin{document}
+
+\maketitle
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{abstract}
+The \MTBCfull{} encompasses both human-adapted lineages responsible for the global
+tuberculosis pandemic and a set of animal-adapted lineages occupying restricted
+ecological niches.
+%
+We present the first large-scale comparative genomic analysis contrasting the four
+basal animal-adapted lineages --- \Msur{} ($n = 17$), \textit{M.~dassievlei} ($n = 7$),
+\Mmun{} ($n = 1$), and \Mchi{} ($n = 1$) --- against secondarily human-adapted lineages
+(L6, L9, L10; $n = 1{,}132$ combined) and strict human-adapted lineages
+(L1--L4; $n \geq 5$ representatives each).
+%
+From a dataset of \num{274800} MTBC genomes accessed through TBannotator~v3.6,
+we characterised 904 SPDIs (sequence variant identifiers) differentiating the animal
+clade core genome from its secondarily human-adapted sister clade (L6/L9/L10).
+Ancestry stratification reveals that 68\% of these are ancestral MTBC variants
+(H37Rv reference bias); only 23~SPDIs (2.5\%) are truly exclusive to
+the four animal lineages, including \textit{eccC3}~D1146N (ESX-3) and
+\textit{rpoA}~V325F (RNA polymerase~$\alpha$).
+%
+Analysis reveals a 25-fold higher insertion sequence (IS) activity in animal
+versus human lineages (2.1\% vs 0.0\%), with IS6110 preferentially targeting
+\textit{PPE55} (68.4\% of total IS activity). Functional annotation revealed a significant enrichment of PE/PPE family mutations
+in animal lineages ($p = 0.0002$ vs.\ ancestral core), alongside a catalogue of
+40 animal-differentiating loss-of-function (LoF) mutations.
+%
+All five ESX type-VII secretion systems harbour animal-differentiating missense variants,
+predominantly in ESX-5 ($n = 9$ SPDIs), yet none exhibit LoF, indicating
+functional remodelling rather than pathway loss.
+%
+The PKS/PDIM lipid biosynthesis pathway shows the strongest signal of adaptive
+divergence: 98 SPDIs across 24 genes, with missense/synonymous ratios
+(dN/dS proxy) exceeding 2.0 in \textit{ppsA}, \textit{pks8}, and
+\textit{pks13}, and convergent pseudogenisation of
+\textit{pks15} in all four animal lineages.
+%
+Convergence analysis reveals 333 genes independently mutated in all four animal
+species (8.3\% of the genome; confirmed in the two multi-genome lineages, $n \geq 7$), representing the
+largest convergent gene set documented in bacterial pathogen evolution and prominently
+enriched for polyketide synthase genes.
+%
+Phylogenetic clade signature analysis identifies 10~synapomorphic SPDIs
+defining the grand clade (L5~+ animal lineages~+ L6/L9/L10), including
+functionally impactful frameshifts in \textit{ald} (L-alanine dehydrogenase)
+and \textit{cyp142} (cholesterol-metabolising cytochrome~P450), alongside
+14~L6/L9/L10-exclusive SPDIs marking secondary human adaptation.
+Notably, no synapomorphic variants could be identified for the strict
+human clade (L1--L4--L7), reflecting the reference bias inherent to SNP
+calling against the L4-derived H37Rv genome.
+%
+These results delineate the genomic boundaries between animal and human MTBC
+ecotypes and highlight the PKS/PDIM pathway as a key determinant of host range.
+
+\noindent\textbf{Keywords:} \textit{Mycobacterium tuberculosis} complex, animal-adapted
+lineages, comparative genomics, PDIM, PE/PPE, ESX, convergent evolution, host adaptation.
+\end{abstract}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Introduction}
+\label{sec:intro}
+
+The \MTBC{} represents a remarkably homogeneous species complex, sharing
+$>$99.9\% nucleotide identity at the whole-genome level, yet encompassing
+pathogens with dramatically different host ranges.
+%
+Human-adapted lineages (L1--L4 and L7) account for the vast majority of the
+estimated 10 million annual tuberculosis cases worldwide \cite{WHO2023}, while a
+set of phylogenetically basal lineages --- collectively termed the ``animal
+clade'' --- cause tuberculosis-like disease in specific non-human mammalian hosts
+and are rarely, if ever, transmitted to humans \cite{Boritsch2016, Gagneux2025}.
+%
+Understanding the genomic basis of this host-range dichotomy is a central
+question in MTBC evolutionary biology, with implications for the origins of the
+human epidemic and for the surveillance of zoonotic risk. Key systems implicated
+in host adaptation include the PE/PPE gene family, which undergoes frequent
+homologous recombination and contributes to antigenic variability
+\cite{Karboul2008}, the ESX type-VII secretion systems, which have evolved
+sophisticated mechanisms to counter host immunity \cite{Groschel2016}, and
+insertion sequence (IS) elements such as IS6110, which drive genomic plasticity
+and have been linked to strain virulence and epidemiological success
+\cite{Fallow2010}.
+
+The animal-adapted MTBC encompasses four named lineages: \Msur{}
+(meerkats, \textit{Suricata suricatta}) \cite{Alexander2010},
+\Mmun{} (banded mongooses, \textit{Mungos mungo}) \cite{Roos2012},
+\Mdas{} (rock hyraxes, \textit{Procavia capensis}) \cite{Parsons2008}, and
+\Mchi{} (chimpanzees, \textit{Pan troglodytes}) \cite{Fabre2010}.
+%
+Recent phylogenetic analyses reveal that MTBC evolution involves a complex
+pattern of multiple host-jumping events rather than simple animal-human
+bifurcation. The lineages L6 (\textit{M.~africanum} West Africa~II),
+L9 (\textit{M.~africanum} East Africa), and L10 \cite{Coscolla2021, Guyeux2024L10}
+represent secondarily human-adapted lineages that evolved from an
+animal-adapted intermediate, forming a paraphyletic relationship with
+the primarily animal-adapted clade and predominantly restricted to
+sub-Saharan Africa.
+%
+This complex phylogenetic topology places these lineages in a pivotal role
+for understanding multi-directional host-switching and the genomic signatures
+of secondary host adaptation \cite{Comas2013, Boritsch2016}.
+
+Lineage 5 (L5, \textit{M.~africanum} West Africa~I) occupies a transitional
+phylogenetic position that represents the primary human-adapted branch
+diverging before the animal adaptation event that later gave rise to both
+the primarily animal-adapted lineages and the secondarily human-adapted
+L6/L9/L10 clade \cite{deJong2010, Coll2014}.
+%
+This complex evolutionary scenario, supported by phylogenetic evidence from
+thousands of genome-scale analyses, provides an informative framework for
+reconstructing the sequence of multiple host-jumping events that shaped
+modern MTBC diversity through recurrent adaptation and counter-adaptation
+across mammalian host species.
+
+Previous genomic studies of the animal-adapted MTBC have focused principally on
+\textit{M.~bovis} and \textit{M.~caprae}, which were excluded from the present
+analysis as they belong to a distinct phylogenetic subgroup \cite{Brosch2002}.
+%
+For the four primarily animal-adapted lineages considered here,
+characterisation has been limited to the definition of species-specific
+Regions of Difference (RD) \cite{Parsons2008, Roos2012, Fabre2010},
+spoligotype profiles, and broad phylogenetic placement \cite{Coll2014, Boritsch2016, Brites2018}.
+%
+No study has systematically compared the single-nucleotide variant landscape of
+all four primarily animal-adapted lineages against both the strict human-adapted
+lineages (L1--L4) and the secondarily human-adapted lineages (L6/L9/L10) at
+scale, nor attempted a quantitative analysis of functional pathway divergence,
+loss-of-function catalogues, or convergent evolution patterns that distinguish
+primary versus secondary host adaptation events.
+
+Here, leveraging a dataset of \num{274800} MTBC genomes catalogued in
+TBannotator~v3.6 \cite{Guyeux2024}, we perform the first large-scale comparative
+genomic analysis between primarily animal-adapted lineages and both strict
+human-adapted lineages (L1--L4) and secondarily human-adapted lineages (L6/L9/L10).
+%
+Our study addresses five main questions:
+(i)~What is the shared core genomic identity of the primarily animal-adapted clade?
+(ii)~Which functional systems are differentially remodelled between primary
+animal adaptation and secondary human adaptation?
+(iii)~Is there evidence for convergent evolution across independently evolving
+animal lineages?
+(iv)~What molecular signatures distinguish secondary human adaptation (L6/L9/L10)
+from primary human adaptation (L1--L4)?
+(v)~What constitutes the minimal universal genomic signature shared by all
+human-adapted MTBC lineages regardless of their evolutionary origin?
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Materials and Methods}
+\label{sec:methods}
+
+\subsection{Genome dataset and lineage definitions}
+\label{sec:methods:data}
+
+Whole-genome sequences and associated metadata were accessed through TBannotator~v3.6,
+a curated database of \num{274800} \textit{M.~tuberculosis} complex genomes with
+standardised SPDI-format variant calls referenced to H37Rv (NC\_000962.3)
+\cite{Guyeux2024}.
+
+Five groups were defined for comparative analysis
+(Table~\ref{tab:groups}):
+%
+\begin{enumerate}
+  \item \textbf{Animal clade} (\textit{Suricattae} $n = 17$;
+        \textit{Mungi} $n = 1$; \textit{Dassie} $n = 7$;
+        \textit{Chimpanzé} $n = 1$; total $n = 26$).
+  \item \textbf{Secondarily human-adapted clade} (L6 $n = 1{,}089$; L9 $n = 40$;
+        L10 $n = 3$; total $n = 1{,}132$).
+  \item \textbf{Strict human lineages} (L1--L4 and L7; five representative
+        strains per sub-lineage for L1--L4, H37Rv excluded;
+        L7 $n = 81$).
+  \item \textbf{L5} ($n = 443$; basal position within the grand clade).
+  \item \textbf{Ancestral core}: intersection of animal and secondarily human-adapted
+        clades ($n = 388$ SPDIs).
+\end{enumerate}
+
+\subsection{Core SPDI analysis}
+\label{sec:methods:spdi}
+
+For each group, the core genome was defined as the set of SPDIs present
+in 100\% of member strains (intersection).
+%
+Animal-differentiating SPDIs were defined as core animal SPDIs absent from
+the secondarily human-adapted core (L6/L9/L10 intersection).
+%
+To assess the true exclusivity of these variants, each animal-differentiating
+SPDI was cross-referenced against all available MTBC lineages: L1--L4
+(including $>$50~L4 sub-lineages; 5~representative strains each,
+excluding H37Rv), L5 ($n = 5$), L7 ($n = 5$), and \textit{M.~canettii}
+($n = 10$). SPDIs present in \textit{M.~canettii} were classified as
+ancestral; those absent from \textit{canettii} but present in any strict
+human lineage were classified as shared derived; the remainder were
+classified as truly animal-exclusive.
+%
+Conversely, human-exclusive SPDIs were defined as secondarily human-adapted core SPDIs
+absent from all animal lineages.
+%
+Phylogenetic clade signatures were computed by identifying SPDIs shared
+by all members of a given clade and absent from all outgroup lineages
+(tolerance: $\leq 1$ false positive per 5~sampled strains to account
+for noise and potential misclassification).
+Four signatures were tested: (A)~strict human clade (L1--L7--L2--L3--L4,
+excluding L5); (B)~extended human clade (L1--L7--L2--L3--L4~+ L5);
+(C)~grand clade (L5~+ animal lineages~+ L6/L9/L10, absent from
+L1--L4, L7 and \textit{M.~canettii});
+(D)~L5-specific (absent from all other lineages).
+
+\subsection{Functional annotation}
+\label{sec:methods:annotation}
+
+Variant effects were predicted with SnpEff \cite{Cingolani2012} against
+H37Rv (NC\_000962.3).
+%
+Functional categories were assigned according to the Mycobrowser
+annotation schema \cite{Kapopoulou2011}.
+%
+Loss-of-function mutations (LoF) were defined as frameshifts, nonsense
+(stop-gain), and start-lost variants.
+%
+A dN/dS proxy was computed per gene as the raw ratio of missense to synonymous
+SPDI counts, without normalisation by the number of synonymous and
+non-synonymous sites available in each codon. This metric does not
+constitute a true $\omega$ (dN/dS) estimate and is used as a comparative
+ordinal indicator only; values derived from small counts
+(e.g.\ 2~missense~/~1~synonymous $= 2.0$) carry wide implicit confidence
+intervals and should not be over-interpreted.
+
+\subsection{ESX secretion system classification}
+\label{sec:methods:esx}
+
+ESX system membership was assigned to each SPDI based on gene name and locus
+tag, using a curated dictionary mapping all component genes of ESX-1 through
+ESX-5 to their respective system \cite{Houben2012}.
+
+\subsection{PKS/PDIM pathway analysis}
+\label{sec:methods:pks}
+
+Genes of the phthiocerol dimycocerosate (PDIM) biosynthesis pathway were
+organised into six functional stages: precursor activation (\textit{fadD28}),
+phthiocerol synthesis (\textit{ppsA--E}), mycocerosate synthesis (\textit{mas}),
+ABC transport (\textit{drrA/B/C}), membrane transport (\textit{mmpL7}),
+and surface translocation (\textit{lppX}), plus 14 auxiliary PKS genes
+\cite{Trivedi2005, Kolly2017}.
+
+\subsection{Convergent evolution analysis}
+\label{sec:methods:convergence}
+
+For each species pair, species-specific SPDIs were defined by subtracting the
+animal clade core (904 SPDIs fixed in all four species) from each
+species' individual core.
+%
+Convergent genes were defined as genes harbouring independent (non-identical)
+species-specific SPDIs in two or more animal lineages.
+%
+Statistical enrichment of functional categories among convergent genes was
+assessed with Fisher's exact test (two-tailed; $\alpha = 0.05$).
+%
+To test whether the observed convergence exceeds neutral expectation, a
+permutation-based null model was constructed: for each species, its
+species-specific SPDI count was redistributed randomly across genes
+with probability proportional to gene length (from H37Rv GFF3 annotation),
+and the number of genes hit in all four species was tallied
+(10{,}000 replicates; significance assessed by $Z$-score and empirical
+$p$-value).
+
+\subsection{Phylogenetic reconstruction}
+\label{sec:methods:phylo}
+
+A neighbour-joining (NJ) tree was constructed from pairwise Jaccard distances
+computed on binary SPDI profiles.
+%
+The dataset comprised all 26 animal strains and a subsample of 19 secondarily human-adapted
+strains (5--7 per lineage).
+%
+Tree visualisation was performed with ETE3 \cite{Huerta-Cepas2016}.
+
+\subsection{Robustness analysis}
+\label{sec:methods:robust}
+
+Given that \Mmun{} and \Mchi{} are each represented by a single genome,
+all primary analyses were repeated restricting the animal group to the
+two multi-genome lineages (\Msur{}, $n = 17$; \Mdas{}, $n = 7$).
+%
+Concordance with the full four-species results is reported for each major finding.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Results}
+\label{sec:results}
+
+\subsection{Dataset overview and phylogenetic relationships}
+\label{sec:results:phylo}
+
+The NJ tree based on SPDI Jaccard distances recapitulates the expected
+MTBC topology (Figure~\ref{fig:phylo}).
+%
+Within the animal clade, \Msur{} and \Mdas{} form a tight cluster, while
+\Mmun{} is more diverged and \Mchi{} occupies an outgroup position relative
+to the three African animal lineages.
+%
+The secondarily human-adapted clade shows L10 as the deepest branch, followed by L9, then L6.
+%
+L5 is confirmed as intermediate between the animal/secondarily human-adapted grade and the
+strict human-adapted L1--L4 lineages.
+
+\subsection{Core genome signatures of the animal clade}
+\label{sec:results:core}
+
+The animal clade core comprises \num{1292} SPDIs, of which 904 are absent
+from the secondarily human-adapted core (L6/L9/L10 intersection;
+Table~\ref{tab:core_summary}).
+%
+The ancestral core shared between animal and secondarily human-adapted clades totals 388~SPDIs.
+%
+Conversely, only 14 SPDIs are exclusive to the secondarily human-adapted clade, nine of which
+are absent from any animal lineage.
+
+\label{sec:results:stratification}
+\paragraph{Ancestry stratification of the 904 animal-differentiating SPDIs.}
+Cross-referencing the 904 animal core SPDIs against all available MTBC lineages
+(L1--L4 with $>$50 sub-lineages, L5, L7, and \textit{M.~canettii}; 5~representative
+strains per sub-lineage) reveals that the majority are ancestral MTBC variants
+shared with other lineages rather than animal-specific innovations
+(Table~\ref{tab:animal_stratification}).
+%
+Of the 904, \num{616} (68\%) are present in \textit{M.~canettii} and represent
+ancient polymorphisms at positions where the H37Rv reference carries a derived
+allele---the same reference-bias phenomenon identified for the clade
+signatures (Section~\ref{sec:results:clade_sig}).
+%
+An additional 42 are post-\textit{canettii} variants shared with strict human
+lineages (L1--L4, L7).
+%
+After removing all variants found in any non-animal MTBC lineage, only
+\textbf{23~SPDIs} (2.5\%) are truly exclusive to the animal clade
+(Table~\ref{tab:truly_exclusive}).
+%
+Among these 23 animal-specific synapomorphies, notable variants include
+\textit{eccC3}~p.D1146N (ESX-3 ATPase), \textit{rpoA}~p.V325F
+(RNA polymerase $\alpha$ subunit), \textit{Rv1816}~p.G195D (transcriptional
+regulator), \textit{hsaB}~p.A168G (cholesterol degradation), and
+\textit{Rv2297}~p.C118* (the only loss-of-function among the 23).
+%
+Although the functional and enrichment analyses presented below are computed
+on the full 904-SPDI set (which validly contrasts the animal core against
+its phylogenetic sister clade, L6/L9/L10), these results should be
+interpreted as characterising the animal core genome composition rather
+than animal-specific adaptations \emph{per se}.
+
+\begin{table}[h]
+\centering
+\caption{Ancestry stratification of the 904 animal core SPDIs (absent from
+the L6/L9/L10 core). Each SPDI was tested against 5~representative strains
+per sub-lineage across all MTBC lineages.}
+\label{tab:animal_stratification}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+\textbf{Category} & \textbf{SPDIs} & \textbf{\%} \\
+\midrule
+Ancestral (present in \textit{M.~canettii}) & 616 & 68.1 \\
+Derived, shared with strict human (L1--L4, L7) & 42 & 4.6 \\
+Derived, absent strict human, shared with L5 & 54 & 6.0 \\
+Derived, absent strict human \& L5, in some L6/L9/L10 & 169 & 18.7 \\
+\textbf{Truly animal-exclusive} & \textbf{23} & \textbf{2.5} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{The 23 truly animal-exclusive SPDIs: present in all four animal
+lineages, absent from all tested human lineages (L1--L4, L5, L7),
+L6/L9/L10, and \textit{M.~canettii}.}
+\label{tab:truly_exclusive}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Gene} & \textbf{Locus} & \textbf{Effect} & \textbf{Change} \\
+\midrule
+\textit{eccC3}  & Rv0284  & missense  & D1146N \\
+\textit{rpoA}   & Rv3457c & missense  & V325F \\
+\textit{Rv1816} & Rv1816  & missense  & G195D \\
+\textit{hsaB}   & Rv3567c & missense  & A168G \\
+\textit{eno}    & Rv1023  & missense  & G293V \\
+\textit{Rv2509} & Rv2509  & missense  & S7G \\
+\textit{Rv2554c}& Rv2554c & missense  & Q165K \\
+\textit{Rv2670c}& Rv2670c & missense  & P124L \\
+\textit{TB22.2} & Rv3036c & missense  & V217M \\
+\textit{Rv0480c}& Rv0480c & missense  & G64R \\
+\textit{Rv0556} & Rv0556  & missense  & A135V \\
+\textit{Rv0613c}& Rv0613c & missense  & S309F \\
+\textit{Rv2297} & Rv2297  & nonsense  & C118* \\
+\textit{mmpL11} & Rv0202c & synonymous & T806T \\
+\textit{nrdB}   & Rv0233  & synonymous & D200D \\
+\textit{pepR}   & Rv2782c & synonymous & V198V \\
+\textit{Rv1597} & Rv1597  & synonymous & G101G \\
+\textit{Rv1026} & Rv1026  & synonymous & P270P \\
+\textit{Rv2969c}& Rv2969c & synonymous & P9P \\
+\textit{PPE60}  & Rv3478  & synonymous & S302S \\
+---             & ---     & intergenic & --- \\
+---             & ---     & intergenic & --- \\
+---             & ---     & intergenic & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Functional categorisation of the 904 animal-differentiating SPDIs reveals conserved hypothetical proteins as the largest category (265 variants, 29\%), followed by intermediary metabolism \& respiration (146, 16\%), cell wall \& cell processes (141, 16\%), and intergenic regions (148, 16\%). PE/PPE family proteins, despite representing only 7\% of animal-differentiating variants (60 SPDIs), show significant enrichment compared to human lineages. The most heavily mutated individual loci include \textit{PPE55} (13 SPDIs), \textit{ppsA} (5 SPDIs), and \textit{PPE54} (5 SPDIs), alongside mycobacterial membrane proteins \textit{mmpL2} and metabolic genes \textit{gyrA} (4 SPDIs each). This distribution suggests that animal adaptation predominantly involves fine-tuning of core metabolic functions and host-pathogen interaction systems rather than wholesale pathway disruption.
+
+\subsection{Functional annotation: PE/PPE enrichment and loss-of-function}
+\label{sec:results:functional}
+
+Among the 904 animal-differentiating SPDIs, functional annotation reveals a significant
+enrichment of PE/PPE family mutations compared to both the secondarily human-adapted exclusive
+set and the ancestral core ($p = 0.02$ and $p = 0.0002$, respectively; Fisher's
+exact test; Figure~\ref{fig:enrichment}).
+%
+PPE55 alone carries 13 animal-differentiating SPDIs.
+
+The animal clade harbours 40 LoF mutations in its differentiating core,
+compared to only 5 in the ancestral core (Figure~\ref{fig:lof}).
+%
+\begin{table}[h]
+\centering
+\caption{Top loss-of-function mutations in the animal core genome}
+\label{tab:lof_genes}
+\begin{tabular}{@{}lllp{6cm}@{}}
+\toprule
+\textbf{Gene} & \textbf{Mutation} & \textbf{Category} & \textbf{Predicted functional consequence} \\
+\midrule
+\textit{mmpL12} & S1108* & Cell wall processes & Loss of specialized lipid transport; reduced cell envelope integrity \\
+\textit{fadD11} & frameshift & Lipid metabolism & Impaired fatty acid activation; altered lipid biosynthesis \\
+\textit{ctpI} & frameshift & Cell wall processes & Disrupted cation homeostasis; altered metal tolerance \\
+\textit{PPE55} & frameshift & PE/PPE & Loss of host-pathogen interaction; reduced antigenic variability \\
+\textit{PPE58} & frameshift & PE/PPE & Impaired immune evasion; altered surface antigen presentation \\
+\textit{aceAa} & frameshift & Central metabolism & Reduced glyoxylate cycle activity; metabolic adaptation \\
+\textit{cobL} & frameshift & Cofactor biosynthesis & Vitamin B12 synthesis defect; altered metabolic flux \\
+\textit{cobK} & frameshift & Cofactor biosynthesis & Vitamin B12 synthesis defect; altered metabolic flux \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The 40 animal-differentiating LoF mutations predominantly affect conserved hypothetical proteins (16 mutations), followed by intermediary metabolism genes (8 mutations) and PE/PPE family proteins (6 mutations). Notably, several LoF mutations target metabolic adaptation systems (vitamin B12 biosynthesis, fatty acid metabolism) and host-interaction mechanisms (PE/PPE proteins, membrane transporters), suggesting that gene loss contributes to ecological specialization in animal-adapted lineages.
+
+\subsection{ESX type-VII secretion systems}
+\label{sec:results:esx}
+
+All five ESX systems carry animal-differentiating SPDIs (Table~\ref{tab:esx}).
+%
+ESX-5, the largest and most recently acquired secretion system with key roles
+in PE/PPE protein translocation \cite{Houben2012}, is the most affected, with
+nine animal-differentiating SPDIs across \textit{esxK}, \textit{esxL}, \textit{esxO},
+\textit{eccB5}, \textit{eccC5}, and \textit{eccD5}.
+%
+Critically, none of the 24 animal-differentiating ESX SPDIs are LoF: all are missense
+or synonymous variants, indicating functional remodelling rather than pathway loss.
+%
+In contrast, human lineages carry two ESX-1 SPDIs and three ESX-2 SPDIs,
+suggesting a distinct trajectory of ESX system divergence.
+
+\subsection{PKS/PDIM pathway: selective remodelling of lipid biosynthesis}
+\label{sec:results:pks}
+
+The PDIM biosynthesis pathway is the most extensively diverged metabolic
+system between animal and human ecotypes (Figure~\ref{fig:pks_overview}).
+%
+Across 24 PKS/PDIM genes, we identified 98 unique SPDIs: 20 in the
+animal ancestral core and 78 species-specific.
+
+The central PDIM pathway (ppsA--E, mas, fadD28, mmpL7, lppX, drrABC)
+shows zero LoF mutations, with 12 missense variants concentrated in \textit{ppsA}
+(dN/dS proxy $= 2.0$) and \textit{ppsE} ($= 0.5$), suggesting functional
+remodelling of phthiocerol chain composition rather than pathway inactivation
+(Figure~\ref{fig:pks_pathway}).
+%
+The ABC transporter DrrA carries a fixed H309D missense shared by all four
+animal lineages.
+
+Auxiliary PKS genes present a strikingly different pattern.
+%
+\textit{pks15} is pseudogenised by a frameshift (G:GC) in the core of all four
+animal species, consistent with the known \textit{pks15/1} fusion distinction
+between \Mtb{} and \textit{M.~bovis} \cite{Reed2004}.
+%
+Beyond this shared event, independent LoF mutations have arisen in
+\textit{pks5} (frameshift in \Msur{} and \Mmun{}),
+\textit{pks6} (frameshift in \Msur{}), and
+\textit{pks7} (nonsense p.Q1265* in \Mchi{}).
+%
+Elevated dN/dS proxies in \textit{pks8} (2.0) and \textit{pks13} (2.0)
+suggest ongoing positive or relaxed selection in these auxiliary enzymes.
+%
+Crucially, no PKS or PDIM gene carries any SPDI exclusive to human lineages,
+confirming that this pathway is under strict purifying selection in
+human-adapted MTBC (Figure~\ref{fig:pks_overview}D).
+
+\subsection{KEGG pathway enrichment}
+\label{sec:results:kegg}
+
+KEGG pathway enrichment analysis reveals distinct metabolic signatures between animal and human MTBC lineages. Animal-differentiating genes show significant representation in oxidative phosphorylation (9 genes, 4.39\%), lipoarabinomannan biosynthesis (5 genes, 2.44\%), and cutin/suberine/wax biosynthesis (3 genes, 1.46\%), suggesting enhanced cell wall modification capacity. Conversely, secondarily human-adapted lineages are enriched for amino acid biosynthesis pathways (15 vs 0 genes in animal-differentiating; $p = 0.032$), particularly cysteine and methionine metabolism, indicating greater metabolic versatility in amino acid synthesis. The ancestral core genome shows strong enrichment for one-carbon folate metabolism (7 genes vs 2 in animal-differentiating; $p = 0.006$), DNA replication machinery, and sulfur relay systems, representing conserved essential functions maintained across both ecotypes.
+
+Pathway completeness analysis demonstrates that core metabolic functions remain largely intact across both ecotypes (Table~\ref{tab:pathway_completeness}). Essential pathways including TCA cycle, fatty acid metabolism, mycolic acid biosynthesis, and oxidative phosphorylation show 100\% gene integrity in both animal and human lineages. However, animal lineages exhibit selective loss-of-function in peripheral pathways: glycolysis/gluconeogenesis (96.8\% intact; \textit{aldehyde dehydrogenase} Rv0223c frameshift) and cofactor biosynthesis (99.2\% intact; vitamin B12 synthesis genes \textit{cobK} and \textit{cobL} frameshifts). This metabolic rewiring pattern supports the hypothesis that animal adaptation involves specialization toward host-specific niches with targeted loss of metabolic redundancy while preserving essential virulence-associated pathways.
+
+\begin{table}[h]
+\centering
+\caption{Metabolic pathway completeness in animal vs human MTBC lineages.
+Total gene counts per pathway are from the KEGG database (release 2025;
+organism code \texttt{mtu}, reference strain H37Rv).
+LoF = loss-of-function variants (frameshift or nonsense) in the animal or
+human core SPDI sets}
+\label{tab:pathway_completeness}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+\textbf{Pathway} & \textbf{Total} & \multicolumn{2}{c}{\textbf{Animal lineages}} & \multicolumn{2}{c}{\textbf{Human lineages}} \\
+ & \textbf{genes} & \textbf{LoF} & \textbf{\% intact} & \textbf{LoF} & \textbf{\% intact} \\
+\midrule
+TCA cycle & 29 & 0 & 100.0 & 0 & 100.0 \\
+Glycolysis/Gluconeogenesis & 31 & 1 & 96.8 & 0 & 100.0 \\
+Fatty acid metabolism & 35 & 0 & 100.0 & 0 & 100.0 \\
+Mycolic acid biosynthesis & 36 & 0 & 100.0 & 0 & 100.0 \\
+Oxidative phosphorylation & 49 & 0 & 100.0 & 0 & 100.0 \\
+One carbon pool by folate & 19 & 0 & 100.0 & 0 & 100.0 \\
+Glyoxylate metabolism & 39 & 0 & 100.0 & 0 & 100.0 \\
+Biosynthesis of amino acids & 111 & 0 & 100.0 & 0 & 100.0 \\
+Purine metabolism & 51 & 0 & 100.0 & 0 & 100.0 \\
+Pyrimidine metabolism & 27 & 0 & 100.0 & 0 & 100.0 \\
+Biosynthesis of cofactors & 133 & 2 & 99.2 & 0 & 100.0 \\
+Sulfur metabolism & 22 & 0 & 100.0 & 0 & 100.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Convergent evolution across animal lineages}
+\label{sec:results:convergence}
+
+After removing the shared animal core (904 SPDIs fixed in all four species),
+333 genes carry independent (non-identical) mutations in all four animal
+lineages, and 118 additional genes are convergently mutated in three of the
+four species (Figure~\ref{fig:convergence}). This represents 8.3\% of the
+estimated 4{,}000-gene MTBC genome.
+%
+To assess whether this level of convergence could arise by chance, we performed
+a permutation test distributing species-specific mutations randomly across
+genes proportionally to gene length (10{,}000 replicates).
+The expected number of 4-of-4 convergent genes under the null model is
+$27.7 \pm 4.7$, yielding a 12-fold enrichment over expectation
+($Z = 65.4$; $p < 10^{-100}$; null range 13--48).
+This far exceeds levels reported in other bacterial pathogens (typically
+50--200 genes; 1.3--5.0\% of the genome \cite{Marvig2015}).
+%
+These convergently evolving genes are significantly enriched for lipid
+metabolism functions ($p < 0.001$; Fisher's exact test), particularly the
+polyketide synthase superfamily, with 13 hypermutated loci ($\geq$10 SPDIs each):
+\textit{pks12} (17 SPDIs), \textit{PPE54} (17), \textit{PPE5} (15), \textit{pks2} (13),
+\textit{ppsE} (12), and \textit{pks6} (12). Additionally, 49 genes show
+convergent loss-of-function mutations across lineages, indicating diversifying
+selection pressure targeting specific functional systems.
+%
+Beyond the dominant PKS/lipid metabolism signal, convergent evolution extends to key regulatory and metabolic systems. Signal transduction pathways show remarkable convergence, with \textit{pstP} (serine/threonine protein phosphatase; 9 independent SPDIs) and \textit{tcrY} (two-component response regulator; 9 SPDIs) independently mutated across all four animal lineages. These proteins regulate stress response and virulence networks, suggesting shared selective pressures toward modified host-interaction strategies. PE/PPE family proteins also emerge as convergent targets, with \textit{PPE54} (17 SPDIs), \textit{PPE5} (15 SPDIs), and \textit{PPE55} (11 SPDIs) showing extensive independent diversification. Metabolic convergence includes \textit{fadH} (NADPH-dependent 2,4-dienoyl-CoA reductase; 9 SPDIs), linking to fatty acid degradation, and transcriptional regulators (Rv1453, 9 SPDIs), indicating coordinated rewiring of regulatory networks. This pattern demonstrates that animal adaptation involves systematic remodelling of host-sensing, metabolic regulation, and antigenic variation systems beyond the well-characterized lipid biosynthesis pathway alterations.
+%
+The robustness of the convergence signal was verified by restricting the analysis
+to the two multi-genome lineages (\Msur{} and \Mdas{}): 10 genes remain
+convergently mutated with independent SPDIs, all within the PKS/lipid category.
+
+\subsection{Differential IS element activity drives genomic instability}
+\label{sec:results:is_elements}
+
+Analysis of insertion sequence (IS) element activity reveals a striking 25-fold
+difference between animal and human MTBC lineages (Figure~\ref{fig:is_activity}).
+Animal-differentiating mutations include 19 IS-related variants (2.1\% of total),
+compared to zero IS activity in secondarily human-adapted lineages (0.0\% across 223 total variants).
+%
+The animal clade shows preferential activity of IS6110 (13 mutations), IS1538
+(4 mutations), and IS3-family elements (1 mutation), with two loss-of-function
+consequences.
+
+A pronounced IS insertion hotspot emerges at \textit{PPE55} (Rv3347c), which
+harbours all 13 IS6110-associated mutations identified in the animal clade
+across a 6{,}755~bp genomic span.
+%
+These mutations include one frameshift disruption (generating a truncated protein),
+six missense variants (L2259P, F1003D, N992T, M999I, L998F, S922G), and six
+synonymous changes, suggesting both ongoing transposition events and selection
+pressure specifically targeting this PE/PPE locus.
+%
+The \textit{PPE55} hotspot represents 68.4\% of total animal IS activity and
+21.7\% of all PE/PPE mutations in animal lineages, indicating that IS6110
+preferentially disrupts antigenic variation systems in animal-adapted lineages.
+%
+Among 30 PE/PPE genes affected by animal-differentiating mutations, \textit{PPE55}
+shows 2.6-fold more mutations than the next most targeted locus (\textit{PPE54}
+with 5 mutations), demonstrating exceptional vulnerability to IS6110 insertion,
+consistent with earlier reports of multiple independent IS6110 insertions at
+identical positions in PPE genes \cite{McEvoy2009}.
+%
+A secondary hotspot at the IS1538 transposase gene (Rv3428c) shows evidence of
+self-targeting, with four mutations including one frameshift that potentially
+limits further transposition activity.
+
+This differential IS burden suggests that animal-adapted MTBC lineages experience
+ongoing genomic instability driven by mobile genetic elements, contrasting with
+the genomic stability observed in human-adapted lineages. The preferential targeting
+of PE/PPE genes may contribute to the antigenic diversification previously observed
+in these lineages, providing a mechanistic basis for the convergent evolution of
+host-pathogen interaction systems.
+
+\subsection{Drug resistance gene validation}
+\label{sec:results:dr}
+
+Cross-referencing the animal-differentiating core against the WHO 2022 catalogue of
+mutations associated with drug resistance identified 29~unique SPDIs falling
+within canonical DR loci (\textit{katG}, \textit{rpoB}, \textit{embB},
+\textit{embC}, \textit{embA}, \textit{gyrA}, \textit{gyrB}, \textit{kasA},
+\textit{tlyA}, \textit{gid}, \textit{fgd1}, \textit{pncA}, \textit{mmpL5}).
+%
+None of these variants is classified as associated with resistance (WHO
+Grades~1--2). Fifteen are synonymous (Grade~5), seven are classified as
+``not associated with resistance'' (Grade~4), and five are recognised
+lineage markers (Grade~5). Two missense variants (\textit{embC}~P772Q,
+\textit{kasA}~G258S) are absent from the WHO catalogue entirely. The only
+variant of uncertain significance is \textit{pncA}~P115S (Grade~3), found
+exclusively in the single \Mchi{} genome.
+%
+Notably, the canonical animal-clade polymorphisms \textit{katG}~R463L and
+\textit{embB}~E378A, shared by all four animal lineages, are confirmed as
+lineage markers unrelated to isoniazid or ethambutol resistance (Grade~4).
+%
+The \textit{gyrA}~S95T substitution falls within the quinolone
+resistance-determining region (QRDR) but is a well-characterised
+animal-clade marker with no fluoroquinolone resistance association.
+%
+Overall, these results confirm that the extensive genomic divergence of
+animal-adapted MTBC does not affect canonical drug targets in a manner
+predictive of resistance.
+
+\subsection{Comparative genomics of the two animal clades}
+\label{sec:results:inter_clade}
+
+The MTBC animal lineages comprise two phylogenetically distinct clades:
+clade~1 (\textit{M.~bovis}, \textit{M.~caprae}, \textit{M.~orygis},
+La4, \textit{M.~microti}, \textit{M.~pinnipedii};
+$n = 71 + 178 + 218 + 21 + 29 + 12 = 529$) and clade~2 (\Msur{}, \Mdas{},
+\Mmun{}, \Mchi{}; $n = 26$), which diverged independently within the
+grand clade.
+%
+To determine what unites and distinguishes these two clades, we computed
+core SPDIs for each (intersection of all available strains per species)
+and compared them.
+
+The core genomes of clade~1 (Bovis $\cap$ Caprae $\cap$ Orygis $\cap$
+La4 $\cap$ Microti $\cap$ Pinnipedii; 427~SPDIs) and clade~2 (Suricattae $\cap$ Dassie
+$\cap$ Mungi $\cap$ Chimpanzé; \num{1292}~SPDIs) share 413~SPDIs (97\% of
+clade~1, 32\% of clade~2).
+%
+However, this shared set does not represent an animal-specific identity:
+virtually all shared SPDIs are present in at least one L6/L9/L10 strain.
+%
+Strikingly, \textbf{zero SPDIs are shared by both animal clades while
+being absent from all non-animal lineages}.
+%
+The shared core between the two animal clades consists entirely of the
+grand-clade ancestral background.
+
+In contrast, each clade harbours its own derived synapomorphies.
+%
+After filtering against all non-animal lineages (\textit{M.~canettii},
+L1--L4, L5, L7, L6/L9/L10), clade~1 retains \textbf{2~truly exclusive
+SPDIs} and clade~2 retains \textbf{23~truly exclusive SPDIs}
+(Table~\ref{tab:truly_exclusive}).
+%
+No gene is targeted by exclusive variants in both clades simultaneously
+--- their synapomorphies affect entirely non-overlapping gene sets
+(Table~\ref{tab:inter_clade}).
+
+\begin{table}[h]
+\centering
+\caption{Comparison of truly exclusive synapomorphies between the two
+animal clades. Notable genes listed for each clade; no convergent gene
+targeting is observed.}
+\label{tab:inter_clade}
+\begin{tabular}{@{}p{3.5cm}p{5.5cm}p{5.5cm}@{}}
+\toprule
+ & \textbf{Clade~1} (Bovis/Caprae/Orygis/La4/Microti/Pinnipedii) & \textbf{Clade~2} (Suricattae/Dassie/Mungi/Chimpanzé) \\
+\midrule
+Truly exclusive SPDIs & 2 & 23 \\
+LoF & 0 & 1 (\textit{Rv2297}~C118*) \\
+\addlinespace
+TA systems & \textit{vapB15}~N63D (antitoxin) & --- \\
+ESX secretion & --- & \textit{eccC3}~D1146N \\
+Transcription & --- & \textit{rpoA}~V325F, \textit{Rv1816}~G195D \\
+Cholesterol catabolism & --- & \textit{hsaB}~A168G \\
+Other & 1~intergenic & \textit{eno}~G293V, \textit{Rv2509}~S7G, \textit{Rv2554c}~Q165K, + others \\
+Convergent genes & \multicolumn{2}{c}{\textbf{0} --- entirely non-overlapping targets} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Relationship between clade~2 and the secondarily human-adapted lineages}
+\label{sec:results:c2_vs_l6l9l10}
+
+Clade~2 (Suricattae/Dassie/Mungi/Chimpanzé) and L6/L9/L10 are phylogenetic
+sisters within the grand clade.
+%
+Their core genomes share 388~SPDIs, of which 255~(66\%) are ancestral
+(\textit{M.~canettii}-positive), 121~(31\%) are derived variants also present
+in clade~1 (grand-clade level), and 12~(3\%) are \textbf{synapomorphies
+exclusive to the clade~2\,+\,L6/L9/L10 node} --- absent from clade~1, L5,
+all strict human lineages, and \textit{M.~canettii}
+(Table~\ref{tab:synapo_c2_l6l9l10}).
+
+All 12 node synapomorphies show perfect concordance: 5/5~strains positive in
+each of L6.1, L9, L10, Suricattae, and Dassie, and 1/1 in Mungi and
+Chimpanzé, with 0/5 in every clade~1 species and L5.
+%
+Among the 12, seven are missense variants and two target pathways repeatedly
+implicated in MTBC adaptation: \textit{eccB3}~(Rv0283; I312M), a component of
+the ESX-3 type~VII secretion system involved in iron acquisition, and
+\textit{plsB2}~(Rv2482c; D16G), a glycerol-3-phosphate acyltransferase in
+membrane lipid biosynthesis.
+%
+The gene \textit{Rv1825} carries two linked variants (R53W missense and D125D
+synonymous), suggesting a locally elevated substitution rate or a selective
+sweep at this locus.
+
+\begin{table}[h]
+\centering
+\caption{Twelve synapomorphies defining the clade~2\,+\,L6/L9/L10 node.
+All are absent from clade~1, L5, L1--L4, L7, and \textit{M.~canettii}.}
+\label{tab:synapo_c2_l6l9l10}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+SPDI & Gene & Locus & Effect & AA change \\
+\midrule
+NC\_000962.3:344956:A:G   & \textit{eccB3}  & Rv0283  & missense   & I312M \\
+NC\_000962.3:445736:C:T   & Rv0368c         & Rv0368c & synonymous & P263P \\
+NC\_000962.3:1699447:C:A  & Rv1508c         & Rv1508c & missense   & W149C \\
+NC\_000962.3:2071191:C:T  & \textit{Rv1825} & Rv1825  & missense   & R53W \\
+NC\_000962.3:2071409:C:T  & \textit{Rv1825} & Rv1825  & synonymous & D125D \\
+NC\_000962.3:2150753:A:G  & Rv1903          & Rv1903  & missense   & T131A \\
+NC\_000962.3:2453932:C:A  & Rv2191          & Rv2191  & missense   & R39S \\
+NC\_000962.3:2501667:C:T  & Rv2228c         & Rv2228c & synonymous & L357L \\
+NC\_000962.3:2789236:T:C  & \textit{plsB2}  & Rv2482c & missense   & D16G \\
+NC\_000962.3:3393310:C:T  & ---             & ---     & intergenic & --- \\
+NC\_000962.3:3981328:G:A  & Rv3542c         & Rv3542c & missense   & H218Y \\
+NC\_000962.3:4225400:C:T  & Rv3779          & Rv3779  & synonymous & T139T \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The divergence between the two sister groups is strikingly asymmetric.
+%
+Clade~2 possesses 904~SPDIs absent from the L6/L9/L10 core, of which
+23 are truly exclusive (Section~\ref{sec:results:stratification}).
+%
+Conversely, only 14~SPDIs are in the L6/L9/L10 core but absent from the
+clade~2 core.
+%
+Closer examination reveals that 10 of these~14 are actually present in
+three of the four clade~2 species and are excluded from the core only
+because a single species has lost them: \Msur{} lacks three (including
+\textit{Rv2818c}/Csm6~Q304*, a CRISPR-associated nonsense mutation),
+\Mmun{} lacks three, and \Mchi{} lacks one (the \textit{stp} serine/threonine
+phosphatase frameshift).
+%
+Only \textbf{4~SPDIs} are genuinely absent from all four clade~2 species:
+one intergenic, \textit{lpqF}~F297L (a lipoprotein), and two synonymous
+variants (\textit{glfT2}~V23V, \textit{eccCa1}~T121T).
+%
+This minimal L6/L9/L10-specific signature (4~SPDIs, only one missense)
+suggests that secondary human re-adaptation required remarkably little
+clade-specific genomic innovation beyond the shared ancestral repertoire.
+
+\subsection{Phylogenetic clade signatures}
+\label{sec:results:clade_sig}
+
+To identify synapomorphic variants that define the major MTBC clades, we
+computed four phylogenetic signatures matching the established topology
+(Table~\ref{tab:clade_signatures}).
+%
+Signatures~A (L1--L7--L2--L3--L4 without L5) and~B (L1--L7--L2--L3--L4
++ L5) both yielded zero SPDIs: the strict intersection of L1 through L4
+core genomes is empty because variant calling against the L4-derived H37Rv
+reference means that L4-specific positions appear as wild-type in L4 strains
+while L1/L2/L3-specific positions appear as wild-type in their respective
+lineages, leaving no shared derived variants across all four.
+%
+Signature~C, the grand clade (L5~+ both animal clades~+ L6/L9/L10),
+identifies 10~synapomorphic SPDIs present in all nine constituent lineages
+(L5, L6, L9, L10, \textit{M.~bovis}, \textit{M.~suricattae},
+\textit{M.~dassievlei}, \textit{M.~mungi}, \textit{M.~chimpanzae}) and
+absent from L1--L4, L7 (exhaustively confirmed in all 81 L7 genomes),
+and \textit{M.~canettii} (0/283 strains, except for two sporadic hits
+at 1/283 each, consistent with sequencing noise).
+%
+Among the 10 grand-clade synapomorphies, three are frameshifts in
+functionally important genes: \textit{ald}~(Rv2780; L-alanine
+dehydrogenase, involved in nitrogen metabolism and dormancy),
+\textit{cyp142}~(Rv3518c; cytochrome~P450 involved in host cholesterol
+catabolism), and Rv1101c (hypothetical protein).
+%
+Four missense variants affect key processes: \textit{birA}~p.D211N
+(Rv3279c; biotin ligase/transcriptional repressor), \textit{vapC48}~p.G34R
+(Rv3697c; toxin--antitoxin persistence), Rv0966c~p.W186G (radical
+aromatic$\to$aliphatic substitution), and Rv0986~p.V228L.
+%
+Signature~D identifies 192~SPDIs specific to L5 and absent from all other
+lineages, confirming its long independent evolution since the basal node
+of the grand clade.
+
+\begin{table}[h]
+\centering
+\caption{Phylogenetic clade signatures.}
+\label{tab:clade_signatures}
+\begin{tabular}{@{}llr@{}}
+\toprule
+Signature & Definition & SPDIs \\
+\midrule
+A & L1--L7--L2--L3--L4 (excl.\ L5), absent from rest & 0 \\
+B & L1--L7--L2--L3--L4 + L5, absent from rest & 0 \\
+C & Grand clade (L5 + animals + L6/L9/L10), absent L1--L4/L7/\textit{canettii} & 10 \\
+D & L5-specific, absent from all others & 192 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{L5 as a genomic bridge}
+\label{sec:results:l5}
+
+L5 shares 216 SPDIs with the secondarily human-adapted clade (L6/L9/L10) that are absent
+from strict human lineages, including notable LoF mutations in \textit{mce1R},
+\textit{cyp142}, and \textit{tgs3}.
+%
+Conversely, L5 shares only two SPDIs with strict human lineages (L1--L4),
+placing it genomically closer to the animal/basal grade than to the strict
+human-adapted core.
+%
+The 10~grand-clade synapomorphies (Signature~C), shared by all lineages
+on the L5/animal/L6--L9--L10 branch but absent from the strict human
+clade (L1--L4--L7) and \textit{M.~canettii}, define the deepest genomic
+split within MTBC after the root divergence.
+%
+The high proportion of functionally impactful variants (3~frameshifts and
+4~non-conservative missense among 10~SPDIs) suggests that the ancestral
+divergence event was accompanied by substantial metabolic rewiring,
+particularly in nitrogen metabolism (\textit{ald}), cholesterol catabolism
+(\textit{cyp142}), and biotin homeostasis (\textit{birA}).
+%
+The absence of any detectable synapomorphy for the strict human clade
+(Signatures A and B both equal zero) reflects the inherent limitation of
+SNP-based variant calling against the H37Rv reference, which belongs to L4.
+This does not imply absence of derived characters in L1--L4--L7 but rather
+that the SPDI framework is blind to positions where H37Rv itself carries
+the derived allele.
+%
+The 192~L5-specific SPDIs (Signature~D) confirm the long independent
+evolutionary trajectory of L5 within the grand clade, consistent with its
+basal phylogenetic position and its restricted geographic distribution in
+West Africa.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{An evolutionary scenario for MTBC host-range specialization}
+\label{sec:disc:evolution}
+
+The genomic signatures identified here allow reconstruction of a comprehensive
+evolutionary scenario for MTBC host-range specialization, spanning from a
+generalist ancestor to modern specialist ecotypes.
+
+The ancestral MTBC likely represented a broad-spectrum pathogen with moderate
+genomic stability, as evidenced by the 388 shared core SPDIs present in both
+animal and secondarily human-adapted lineages. This ancestral state maintained functional
+redundancy in metabolic pathways and possessed the complete suite of virulence
+systems (ESX-1 through ESX-5, intact PKS/PDIM machinery, and diverse PE/PPE
+repertoires) without the host-specific modifications observed in modern lineages.
+
+Ecological divergence initiated contrasting evolutionary trajectories.
+Animal-adapted populations experienced massive activation of mobile genetic
+elements, particularly IS6110, leading to a 25-fold increase in transposition
+activity compared to human lineages. This ``genomic instability phase'' drove
+convergent evolution across 333 genes in four independent animal lineages,
+with IS6110 preferentially targeting PE/PPE loci (particularly \textit{PPE55})
+to generate antigenic diversity. Metabolic streamlining occurred through
+selective loss-of-function in peripheral pathways (vitamin B12 synthesis,
+aldehyde metabolism) while preserving essential virulence functions.
+
+The human trajectory involved a contrasting ``genomic stabilization'' event,
+characterized by complete cessation of IS activity. The 10~grand-clade
+synapomorphies, including frameshifts in \textit{ald} and \textit{cyp142},
+mark the ancestral divergence of the L5/animal/L6--L9--L10 branch from
+the strict human clade, while 14~L6/L9/L10-exclusive SPDIs
+(including \textit{stp} frameshift and \textit{Csm6} Q304* nonsense)
+represent the molecular signatures of secondary human re-adaptation.
+L5 occupies a basal position within the grand clade, with 192~unique
+SPDIs reflecting its long independent evolution, and likely represents
+the transitional state between generalist and human-specialist forms.
+
+The resulting dichotomy represents two fundamentally different evolutionary
+strategies: animal lineages pursuing ``diversifying selection'' through ongoing
+genomic instability, and human lineages achieving ``optimizing selection''
+through stabilization and transmission enhancement. This model predicts that
+zoonotic spillover risk remains low due to the extensive genomic specialization
+in both ecotypes, and suggests that therapeutic targeting should account for
+the distinct evolutionary pressures shaping each host-adapted clade.
+
+This study reveals several findings that extend beyond previous MTBC evolutionary
+studies (Table~\ref{tab:novel_findings}). While IS6110 transposition dynamics have been reported across MTBC
+lineages \cite{Gonzalo2018}, the 25-fold differential activity between animal
+and human ecotypes, and the unprecedented targeting of a single PE/PPE locus
+(\textit{PPE55}) representing 68.4\% of total IS activity, have not been
+previously described. Similarly, while convergent evolution has been documented
+in bacterial pathogens (typically 50--200 genes in \textit{Pseudomonas aeruginosa}
+\cite{Marvig2015}), the 333-gene convergent set identified here represents an
+exceptional 8.3\% of the MTBC genome, suggesting unusually strong selective
+pressures during animal host specialization. The 10~grand-clade synapomorphies define the deepest split within MTBC
+after the root, and the 14~L6/L9/L10-exclusive SPDIs provide the first
+SNP-level molecular markers of secondary human adaptation.
+
+\subsection{Complex phylogenetic topology reveals multiple host-jumping events}
+\label{sec:disc:complex_phylogeny}
+
+Comprehensive phylogenetic analysis of thousands of MTBC genomes reveals a
+complex evolutionary topology that contradicts the traditional model of simple
+animal-human bifurcation. The data support a multi-host jumping scenario
+where L6, L9, and L10 represent secondarily human-adapted lineages that evolved
+from an animal-adapted intermediate rather than representing basal human lineages.
+%
+This interpretation is strongly supported by recent phylogenetic discoveries,
+including the identification of L10 as a ``missing link'' in \textit{M.~africanum}
+evolutionary history \cite{Guyeux2024L10} and the documentation of paraphyletic
+relationships among animal-adapted MTBC members \cite{Brites2018}, where some
+animal lineages are more closely related to certain human lineages than to
+other animal lineages.
+
+The proposed evolutionary scenario involves at least four independent
+host-switching events: (1) initial divergence from a generalist African
+ancestor, (2) specialization toward animal hosts in the primarily
+animal-adapted clade, (3) secondary adaptation back to human transmission
+giving rise to L6/L9/L10, and (4) independent human specialization in the
+L1--L4 lineages. This model explains several previously puzzling observations:
+the geographic co-localization of L5 and L6/L9 in West Africa despite their
+phylogenetic separation from strict human lineages, the molecular signatures
+of convergent adaptation toward human transmission observed in both L6/L9/L10
+and L1--L4, and the apparent asymmetric burden of animal-differentiating variants
+(904 SPDIs, of which 23 truly exclusive) versus secondarily human-adapted
+exclusive variants (14 SPDIs), although rarefaction analysis shows this
+asymmetry is largely driven by differential sampling depth
+(Section~\ref{sec:disc:limits}).
+
+The genomic evidence supporting this secondary adaptation hypothesis includes:
+(1) the 10~grand-clade synapomorphies shared by L5, both animal clades, and
+L6/L9/L10 but absent from L1--L4/L7 and \textit{M.~canettii}, confirming
+that L6/L9/L10 belong to the same major branch as the animal lineages;
+(2) the 14~L6/L9/L10-exclusive SPDIs marking the genomic modifications
+acquired during re-adaptation to human transmission; and (3) the transitional
+genomic composition of these lineages showing intermediate characteristics
+between animal and strict human adaptations.
+This complex phylogenetic framework fundamentally revises our understanding
+of MTBC evolution and highlights the remarkable plasticity of this pathogen
+in adapting to diverse mammalian hosts through recurrent host-jumping events.
+
+\subsection{Epidemiological implications of secondary human adaptation}
+\label{sec:disc:epidemiological_implications}
+
+The recognition that L6/L9/L10 represent secondarily human-adapted lineages
+has potential implications for MTBC epidemiology. The evolutionary legacy of
+their animal-adapted intermediate phase could conceivably confer distinct
+transmission dynamics, tissue tropism, or immune-evasion profiles compared to
+strict human lineages (L1--L4), and the demonstrated capacity for
+bidirectional host-jumping challenges traditional unidirectional spillover
+models. However, the present study provides genomic evidence only; whether
+these genomic differences translate into measurable epidemiological or
+clinical differences remains an open question that will require dedicated
+clinical and epidemiological studies in regions where L6/L9/L10 co-circulate
+with animal-adapted MTBC members.
+
+\subsection{Phylogeographic evidence for L5 as an evolutionary bridge}
+\label{sec:disc:l5_bridge}
+
+The intermediate phylogenetic position of L5 between animal-adapted and strictly
+human-adapted lineages, combined with its West African geographic restriction
+\cite{Gehre2013,YeboahManu2017}, suggests this lineage represents an evolutionary
+bridge in MTBC host specialization. L5 shares 216 SPDIs with secondarily human-adapted lineages
+(L6/L9/L10) that are absent from strict human lineages (L1--L4), and
+all 10~grand-clade synapomorphies including the \textit{ald} and
+\textit{cyp142} frameshifts.
+Additionally, L5 harbours 192~unique SPDIs absent from every other lineage,
+including loss-of-function mutations in \textit{mce1R} (mammalian cell entry
+regulator) and lipid metabolism genes (\textit{fadD32}), that suggest
+adaptations to intracellular survival distinct from both animal and strict
+human lineages.
+
+West Africa represents the only region where six of seven major MTBC lineages
+are endemic \cite{YeboahManu2017}, with L5 showing maximum genetic diversity
+in this region \cite{Gehre2013}. This phylogeographic pattern supports a
+``West African Bridge'' hypothesis wherein L5 represents a relictual population
+from an ancient spillover event that preceded the evolution and global expansion
+of strict human-adapted lineages. The shared mutations between L5 and
+secondarily human-adapted lineages (L6/L9/L10) likely reflect adaptations
+acquired at the
+ancestral node of African human-adapted MTBC, while the subsequent evolution
+of L1--L4 involved additional specializations for enhanced human-to-human
+transmission that are absent from both L5 and animal-adapted lineages.
+
+\subsection{Temporal calibration of MTBC evolution}
+\label{sec:disc:temporal}
+
+Published molecular dating estimates place the MTBC root at
+$\sim$70{,}000~years ago and the animal--human divergence at
+$\sim$50{,}000~years ago \cite{Comas2013}, predating the major demographic
+transitions associated with agriculture. Within this framework, the
+10~grand-clade synapomorphies mark the deep split shared by L5, animal
+lineages, and L6/L9/L10, while the 14~L6/L9/L10-exclusive SPDIs likely
+arose during the subsequent secondary human adaptation. Precise dating of
+intermediate nodes remains uncertain and will require dedicated Bayesian
+phylogenomic analyses with broader taxon sampling.
+
+\subsection{Speculative evolutionary mechanisms for secondary human adaptation}
+\label{sec:disc:reemergence_mechanisms}
+
+The secondary adaptation of L6/L9/L10 from animal-adapted intermediates back
+to human hosts is one of the most intriguing features of MTBC evolution, but
+the mechanisms remain speculative. One plausible hypothesis is \emph{latent
+pre-adaptation}: animal-adapted lineages may have retained vestigial machinery
+for human transmission that could be reactivated with relatively few genomic
+changes, consistent with the small number of L6/L9/L10-exclusive SPDIs
+identified here. Climate-driven host compression during the Last Glacial
+Maximum could have provided the ecological opportunity for such a switch, as
+documented for other bacterial host-jumps \cite{Spyrou2022}. However, these
+scenarios require dedicated experimental validation---particularly functional
+testing of the 4~truly L6/L9/L10-exclusive variants, the 12~node
+synapomorphies, and the grand-clade synapomorphies---before they can be
+elevated beyond informed speculation.
+
+\begin{table}[h]
+\centering
+\caption{Novel findings and their relationship to existing knowledge}
+\label{tab:novel_findings}
+\begin{tabular}{@{}p{4cm}p{4cm}p{4cm}p{2cm}@{}}
+\toprule
+\textbf{Discovery} & \textbf{Previous knowledge} & \textbf{Our contribution} & \textbf{Originality} \\
+\midrule
+IS6110 activity 25× higher in animal lineages & IS6110 distribution varies between lineages \cite{Gonzalo2018} & Quantified differential activity; mechanistic explanation & High \\
+PPE55 IS6110 hotspot (68.4\% activity) & No prior reports of IS6110-PE/PPE targeting & First description of IS insertion hotspot in PE/PPE genes & Complete \\
+333 convergent genes (8.3\% genome) & Convergent evolution: ~50-200 genes typical \cite{Marvig2015} & Largest bacterial pathogen convergent gene set described & High \\
+10 grand-clade synapomorphies & Clade-defining SNPs not systematically catalogued & First SNP-level synapomorphy of the L5/animal/L6--L9--L10 branch & High \\
+23 truly animal-exclusive SPDIs & Animal core defined by RD deletions only \cite{Brosch2002} & First ancestry-stratified SNP synapomorphy of the animal clade & High \\
+0 convergent genes between animal clades & Animal clades assumed to share common adaptations & Phenotypic convergence via non-overlapping genomic routes & Complete \\
+12 synapomorphies of C2\,+\,L6/L9/L10 node & No SNP-level markers for this branching point & First definition including \textit{eccB3} (ESX-3) and \textit{plsB2} (lipids) & High \\
+4 truly L6/L9/L10-exclusive SPDIs & Secondary human adaptation assumed to require many changes & Minimal genomic innovation for host re-switching & High \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Characterising the animal core genome: ancestry stratification}
+\label{sec:disc:identity}
+
+The 904 animal-differentiating SPDIs reported here are fixed in all four animal
+lineages and absent from the L6/L9/L10 core, providing a comprehensive
+characterisation of the animal core genome relative to its closest
+human-adapted sister clade.
+%
+Ancestry stratification reveals that 68\% of these variants are ancestral
+MTBC polymorphisms (present in \textit{M.~canettii}), reflecting the
+well-known H37Rv reference bias rather than animal-specific innovation.
+%
+After filtering against all available MTBC lineages ($>$50 L4 sub-lineages,
+L1--L3, L5, L7, and \textit{M.~canettii}), only 23~SPDIs (2.5\%) are
+truly exclusive to the animal clade --- the genuine synapomorphies of the
+animal-adapted MTBC ecotype.
+%
+Their coherence across lineages as divergent as \Msur{} and \Mchi{} --- estimated
+to have shared a common ancestor over a million years ago \cite{Boritsch2016} ---
+implies that these 23 mutations were already fixed in the ancestral animal clade
+population, prior to the ecological divergence into individual host species.
+
+This SNP-resolution definition complements and extends the established
+Region of Difference (RD) framework for MTBC classification \cite{Brosch2002}.
+%
+RD deletions (notably RD7, RD8, RD9, and RD10) have long served as the
+primary markers distinguishing animal-adapted from human-adapted MTBC
+\cite{Brosch2002, Mostowy2005}, but they capture only large chromosomal deletions
+and provide no information on the fine-grained functional divergence that
+accumulated alongside them.
+%
+The 904-SPDI animal core includes 439 missense (48.5\%) and 40
+loss-of-function variants distributed across 611 loci, revealing a layer of
+molecular variation invisible to deletion-based typing.
+%
+The elevated dN/dS proxy of the animal core (1.65) should be interpreted
+with caution, as the majority of these variants are ancestral MTBC
+polymorphisms rather than animal-specific innovations; the signal likely
+reflects the overall composition of ancient MTBC variation at positions
+where H37Rv carries derived alleles.
+
+The functional composition of the core is instructive.
+%
+While ``conserved hypotheticals'' account for the largest absolute count
+(265 SPDIs, 29.3\%), consistent with the baseline polymorphism rate of
+poorly characterised genes, the next most represented categories are
+intermediary metabolism \& respiration (146 SPDIs, 16.1\%), cell wall
+\& cell processes (141 SPDIs, 15.6\%), PE/PPE (60 SPDIs, 6.6\%), and lipid
+metabolism (53 SPDIs, 5.9\%).
+%
+This profile differs markedly from the secondarily human-adapted clade, which harbours
+only 14 lineage-exclusive SPDIs at full sampling depth ($n = 1{,}132$) ---
+nine of which are absent from any animal lineage --- although rarefaction
+analysis demonstrates that this asymmetry is largely attributable to the
+44-fold difference in sampling depth between the two clades
+(Section~\ref{sec:disc:limits}).
+%
+Taken together with the 388 SPDIs shared by both animal and secondarily human-adapted clades
+(the ancestral MTBC core), these data paint a picture in which the animal clade
+underwent a burst of adaptive fixation relative to the ancestral state, while
+the secondarily human-adapted lineages remained comparatively close to the ancestral genomic
+configuration.
+%
+This is consistent with the hypothesis that the MTBC ancestor was a generalist
+pathogen of African mammals, and that the animal-adapted lineages underwent
+accelerated molecular evolution as they specialised to increasingly restricted
+host niches \cite{Comas2013, Boritsch2016}.
+
+\subsection{PKS/PDIM remodelling as a hallmark of animal host adaptation}
+\label{sec:disc:pks}
+
+The concentration of adaptive divergence in the PKS/PDIM pathway is consistent
+with the established role of PDIM in modulating host immune recognition.
+%
+PDIM shields the mycobacterial surface from Toll-like receptor detection and
+facilitates phagosomal escape \cite{Camacho2001, Rousseau2004}, and its
+structural modification could alter the nature of the host--pathogen interaction
+in a host-specific manner.
+%
+Recent work demonstrates that metabolic environment directly governs PDIM
+maintenance: propionate availability prevents loss of PDIM production
+\cite{Mulholland2024}, providing a mechanistic link between host-specific
+nutrient environments and the selective pressures on PKS/PDIM genes observed
+here. Furthermore, PDIM loss has been shown to differentially alter ESX-1
+substrate secretion \cite{vanWijk2024}, suggesting that the coordinated
+divergence of PKS/PDIM and ESX systems in animal lineages may be
+functionally coupled rather than independent.
+%
+The absence of LoF in the central ppsA--E/mas/mmpL7 pathway suggests that PDIM
+production itself remains essential across all MTBC ecotypes, while auxiliary
+PKS enzymes modulating PDIM chain length or accessory lipid composition are
+subject to relaxed or positive selection.
+
+\subsection{PE/PPE surface variability and host-specific immune evasion}
+\label{sec:disc:pppe}
+
+The PE/PPE gene families constitute one of the most distinctive features of the
+MTBC genome, accounting for approximately 10\% of its coding capacity.
+%
+These proteins, characterised by conserved N-terminal PE or PPE domains and
+hypervariable C-terminal regions, are predominantly surface-exposed or secreted,
+and have been implicated in antigenic variation, modulation of host immune
+responses, and manipulation of phagosomal trafficking
+\cite{Banu2002, Sampson2011, Peng2022}.
+%
+Our data reveal that this gene family is disproportionately targeted by
+animal-clade mutations: 60 of the 904 animal-differentiating SPDIs (6.6\%)
+fall within PE/PPE genes, spanning 30 distinct loci, a proportion significantly
+enriched relative to the ancestral core ($p = 0.0002$, Fisher's exact test)
+and to the secondarily human-adapted exclusive set, which contains no PE/PPE SPDIs whatsoever.
+
+Among the 60 PE/PPE SPDIs, 28 are missense variants and six are loss-of-function
+mutations (frameshifts in \textit{PE\_PGRS47}, \textit{PPE5}, \textit{PPE6},
+\textit{PPE7}, \textit{PPE55}, and \textit{PPE58}), suggesting a dual dynamic:
+ongoing diversification of surface-exposed residues on one hand, and outright
+pseudogenisation of specific family members on the other.
+%
+This pattern is consistent with the well-described birth-and-death evolution
+of PE/PPE genes, whereby individual members can be silenced while the overall
+family retains functional diversity \cite{Veyrier2009}.
+
+\textit{PPE55} (Rv3347c) emerges as the most intensely mutated locus in the
+entire animal-differentiating core, with 13 SPDIs across all four lineages.
+%
+These include a frameshift shared by all four animal species --- fixed in the
+ancestral animal clade --- alongside at least eight non-synonymous substitutions
+distributed along the C-terminal hypervariable region, several of which are also
+shared across all four lineages (L998F, M999I, N992T, L2259P, F1003D).
+%
+The co-occurrence of a frameshift with maintained missense variation in the same
+gene is unusual and may reflect a functional shift: the frameshift could
+truncate a surface-exposed domain while preserving a structurally distinct
+isoform still subject to immune-driven diversification.
+
+The signal of PE/PPE divergence is further amplified by the convergence analysis.
+%
+PPE54, PPE5, PPE6, and PPE8 each carry independent, non-identical mutations in all
+four animal lineages --- the strongest possible evidence for parallel adaptive
+pressure on these loci.
+%
+The convergent mutations in PPE54 and PPE5 include inframe indels in their
+C-terminal domains, a type of variation associated with rapid antigenic
+diversification under immune selection \cite{Fishbain2015}.
+
+A mechanistically coherent picture emerges when this PE/PPE remodelling is
+considered alongside the ESX-5 secretion system data.
+%
+ESX-5 is the dominant type-VII secretion system responsible for translocating
+PE/PPE proteins to the mycobacterial surface and into the host cell
+\cite{Houben2012}, and it is precisely ESX-5 that carries the highest number
+of animal-differentiating SPDIs among the five ESX systems (nine SPDIs, all missense
+or synonymous; Table~\ref{tab:esx}).
+%
+We propose that the coordinated divergence of ESX-5 and its PE/PPE substrate
+repertoire reflects co-evolution of a secretion apparatus with its cargo,
+optimising the presentation of host-specific surface antigens without
+compromising the integrity of the secretion pathway itself --- an interpretation
+supported by the complete absence of loss-of-function mutations in any ESX system
+across all four animal lineages.
+
+\subsection{ESX secretion systems: conserved function, altered substrate specificity}
+\label{sec:disc:esx}
+
+Perhaps the most striking finding of the ESX analysis is its negative result: across
+all 24 animal-differentiating SPDIs distributed over the five type-VII secretion systems,
+not a single loss-of-function mutation is observed.
+%
+This conservation is biologically expected --- ESX-1 is required for phagosomal
+disruption and full virulence \cite{Hsu2003, Derbyshire2012}, ESX-3 is essential
+for iron and zinc acquisition and cannot be deleted without loss of viability
+\cite{Serafini2009, Siegrist2009}, and ESX-5 is the primary translocase for the
+PE/PPE surface protein repertoire \cite{Houben2012} --- yet it is not trivially
+guaranteed, given the extensive pseudogenisation observed in other functional
+systems of the same genomes.
+%
+Its confirmation therefore constitutes meaningful evidence that type-VII secretion
+represents a conserved architectural constraint across all MTBC ecotypes,
+regardless of host range.
+
+The pattern of missense divergence, however, is system-specific and biologically
+interpretable.
+%
+ESX-5 accumulates the most animal-differentiating variation (nine SPDIs), consistent
+with its role as the secretion conduit for the PE/PPE proteins that are themselves
+the most diverged gene family in this dataset (Section~\ref{sec:disc:pppe}).
+%
+The affected components include the channel subunit EccB5 (p.R41H), the membrane
+component EccD5 (p.G261D), and the secreted substrates EsxL (p.A12D) and EsxO
+(p.G22A), suggesting that both the translocon and its cargo have co-evolved.
+%
+Notably, the EsxL A12D substitution falls within the conserved WXG motif of
+ESAT-6 family proteins, a region critical for dimerisation and membrane
+interaction \cite{Poulsen2014}, and its fixation in the animal clade core implies
+functional significance.
+
+ESX-1, the primary virulence secretion system, carries five animal-differentiating SPDIs,
+but these are restricted to accessory Esp proteins (EspA p.T192I; EspK p.C729S and
+p.S194F) rather than the core ATPases or the primary secreted effectors EsxA and
+EsxB.
+%
+EspA and EspK are regulatory and stabilising components of the ESX-1 secretion
+complex \cite{Chen2013}, and their divergence in the animal clade may reflect
+fine-tuning of effector secretion kinetics or specificity in animal host
+phagosomes, rather than a qualitative change in secretion competence.
+
+ESX-3 presents a subtler but biologically consequential pattern: the missense
+variant EccC3 D1146N (shared by all four animal lineages) affects the Walker~B
+motif of the core ATPase that drives substrate translocation \cite{Poulsen2014}.
+%
+ESX-3 couples iron and zinc uptake to the recycling of mycobactin siderophores
+\cite{Serafini2009}, and its modification in the animal clade may reflect
+adaptation to the distinct metal availability profiles of the tissues colonised
+in their respective animal hosts.
+%
+This hypothesis is further supported by the human lineage trajectory: EccE3
+N217D, a missense in a different ESX-3 subunit, is found across human lineages
+(L1--L4, L5, L6/L9/L10) and absent from the animal clade, although it also
+represents an ancestral MTBC variant relative to H37Rv rather than a
+human-specific innovation.
+%
+Animal and human ecotypes therefore appear to have independently remodelled
+ESX-3 at different structural positions, converging on a shared outcome ---
+altered iron/zinc acquisition --- through divergent molecular means.
+
+Taken together, these data support a model in which the five ESX systems are
+subject to strong purifying selection at the pathway level but to ongoing
+adaptive evolution at the level of individual substrate-interacting and
+regulatory components.
+%
+The animal and human ecotypes have each accumulated system-specific changes
+--- predominantly in ESX-5 and its PE/PPE cargo for the animal clade, and in
+ESX-1 and ESX-3 scaffold components for human lineages --- reflecting the
+distinct immunological environments imposed by their respective hosts.
+%
+This model of ``tuning without destruction'' is further supported by the
+recent discovery that homopolymeric tracts near ESX-1 regulators generate
+phase variants that modulate secretion levels and host fitness
+\cite{Hartman2025}, providing an additional, non-mutational mechanism for
+ESX functional adjustment.
+
+\subsection{Convergent evolution implicates lipid metabolism as an adaptive axis}
+\label{sec:disc:convergence}
+
+After subtracting the 904 mutations fixed in the animal core, 333~genes
+carry independent, non-identical mutations in all four animal lineages.
+%
+The dominant functional signal among these convergently evolving loci is
+lipid metabolism: at least 18 polyketide synthase and fatty-acid metabolism genes
+--- including \textit{pks2}, \textit{pks3}, \textit{pks4}, \textit{pks6},
+\textit{pks8}, \textit{pks9}, \textit{pks12}, \textit{pks13}, \textit{ppsA--C},
+\textit{ppsE}, \textit{fadH}, \textit{fadD5}, \textit{fadD15}, and \textit{plsB2}
+--- are convergently mutated in all four lineages.
+%
+This result survives the conservative robustness test restricted to the two
+multi-genome lineages (\Msur{} and \Mdas{}), confirming that the signal is not
+an artefact of single-genome sampling.
+
+Two non-exclusive mechanisms can account for convergent mutation accumulation
+in the same genes across independently evolving lineages: parallel positive
+selection driven by a common adaptive pressure, or independent relaxation of
+purifying selection in genes whose function has become partially dispensable
+in a new ecological context.
+%
+Our data support both, operating on different gene subsets.
+%
+The elevated missense/synonymous ratios observed for \textit{ppsA} (2.0),
+\textit{pks8} (2.0), and \textit{pks13} (2.0) are suggestive of positive or
+relaxed selection, although these proxy values are derived from small absolute
+counts and formal $\omega$ estimation (e.g.\ PAML site models) would be
+required to confirm this interpretation.
+%
+In contrast, the convergent frameshift in \textit{pks6} (independently acquired in
+\Msur{}) and the frameshift in \textit{fadD15} (present in all four lineages)
+point to relaxed purifying selection: when a gene becomes dispensable, independent
+loss-of-function events become the expected outcome under drift.
+
+The biological coherence of this dichotomy is informative.
+%
+The PDIM central pathway (ppsA--E, mas, mmpL7) retains zero loss-of-function
+mutations across all lineages --- indicating that PDIM production itself is
+non-negotiable --- while the auxiliary PKS enzymes that modulate the accessory
+lipid repertoire are progressively shed or diversified in a lineage-specific
+manner.
+%
+All four animal hosts share one biological constraint: they impose a physically
+distinct tissue niche (meerkats: pulmonary/lymphatic; mongooses: nasal passages;
+hyraxes: lymph nodes; chimpanzees: respiratory tract) with different macrophage
+lipid environments \cite{Boritsch2016}, potentially selecting for parallel
+remodelling of the mycobacterial surface lipid profile.
+
+Beyond the PKS/PDIM axis, the convergence analysis identifies two regulatory
+genes mutated independently in all four animal lineages: \textit{pstP}, encoding
+a phosphoserine/threonine phosphatase involved in cell-wall remodelling
+\cite{Chopra2003}, and \textit{tcrY}, a two-component response regulator.
+%
+Their convergent missense divergence suggests that signal transduction pathways
+governing cell-wall dynamics have also been independently retuned across the
+animal clade, possibly in response to differences in the host phagosomal
+environment.
+%
+These convergent patterns at the SNP level complement recent pan-genome analyses
+showing that gene content diversification in MTBC is shaped by both phylogenetic
+and ecological signatures, with each ecotype carrying its own accessory genome
+\cite{Zwyer2024}, and that convergent deletions in PE/PPE and other regions
+contribute to the small, closed MTBC pangenome \cite{Orgeur2025}.
+
+\subsection{Phenotypic convergence despite genomic divergence between animal clades}
+\label{sec:disc:inter_clade}
+
+The comparison between the two animal clades provides a striking illustration
+of how convergent ecological outcomes can arise through entirely different
+molecular routes.
+%
+Clade~1 (Bovis/Caprae/Orygis/La4/Microti/Pinnipedii) and clade~2
+(Suricattae/Dassie/Mungi/Chimpanzé) share 413~core SPDIs, but this shared
+repertoire consists entirely of grand-clade ancestral variants (all also present
+in at least one L6/L9/L10 strain): not a single SPDI is shared by both animal
+clades while being absent from all non-animal lineages.
+%
+In other words, the two animal clades have no common genomic ``animal identity''
+beyond their shared phylogenetic background.
+
+Their respective synapomorphies (2 for clade~1, 23 for clade~2) target
+entirely non-overlapping gene sets.
+%
+Clade~1 retains only two truly exclusive SPDIs after filtering: one intergenic
+and a missense variant in the antitoxin \textit{vapB15}~(N63D), suggesting a
+minimal clade-specific genomic signature despite encompassing six species.
+%
+Clade~2, in contrast, shows 23~innovations including type-VII secretion
+(\textit{eccC3}~D1146N in the ESX-3 ATPase), core transcriptional machinery
+(\textit{rpoA}~V325F), and host cholesterol metabolism (\textit{hsaB}~A168G).
+%
+The absence of any convergently targeted gene between the two exclusive sets
+is notable given that both clades face analogous selective pressures as
+animal-restricted pathogens, and contrasts sharply with the 333-gene
+convergent signal observed \emph{within} clade~2 across its four species.
+
+This pattern has two important implications.
+%
+First, it suggests that the selective pressures driving animal host adaptation
+operate at the pathway level (lipid remodelling, immune evasion, intracellular
+survival) rather than at the level of individual genes, allowing multiple
+molecular solutions to the same ecological challenge.
+%
+Second, it reinforces the view that ``animal-adapted MTBC'' is not a monolithic
+ecotype but rather a paraphyletic assemblage of independently evolving lineages
+whose convergence is phenotypic --- restricted host range, reduced human
+transmissibility --- rather than genomic.
+%
+The striking asymmetry in clade-specific synapomorphies (2 for clade~1 vs~23
+for clade~2), despite substantially deeper sampling of clade~1
+(529 vs~26~genomes), suggests that the six-species clade~1 core is heavily
+constrained: with more species in the intersection, most derived variants
+are diluted away, leaving only the deepest-rooting mutations.
+%
+Clade~2, with fewer but more divergent species, retains more of its
+branch-defining variants in the core.
+
+\subsection{The clade~2\,/\,L6--L9--L10 sister relationship: divergence from a shared node}
+\label{sec:disc:c2_l6l9l10}
+
+The 12~synapomorphies defining the clade~2\,+\,L6/L9/L10 node
+(Table~\ref{tab:synapo_c2_l6l9l10}) provide the first SNP-level definition
+of this phylogenetic branching point.
+%
+The presence of \textit{eccB3}~I312M (ESX-3 secretion) and
+\textit{plsB2}~D16G (membrane lipid biosynthesis) among these 12 variants
+echoes the recurrent targeting of secretion and lipid pathways across MTBC
+diversification, and suggests that modifications in these systems were already
+underway before the split between animal-adapted and secondarily human-adapted
+lineages.
+
+The most striking result, however, is the near-total absence of a
+L6/L9/L10-specific genomic signature.
+%
+Only 4~SPDIs are genuinely exclusive to L6/L9/L10 (absent from all four
+clade~2 species), and only one encodes a missense change
+(\textit{lpqF}~F297L).
+%
+The remaining 10~SPDIs that appear ``L6/L9/L10-exclusive'' when compared
+against the clade~2 core are in fact present in three of the four clade~2
+species: they are excluded from the core because a single species has
+independently lost each variant --- \Msur{} (3~losses, including
+\textit{Rv2818c}/Csm6~Q304*), \Mmun{} (3~losses), and \Mchi{}
+(1~loss: the \textit{stp} phosphatase frameshift).
+%
+This observation underscores a methodological caveat: core-genome
+intersections are sensitive to single outlier species, and
+``group-exclusive'' sets should always be validated at the per-species level.
+
+The asymmetry in divergence is remarkable: 904~SPDIs separate clade~2 from
+the L6/L9/L10 core, but only 14 (of which 4~genuine) separate L6/L9/L10
+from clade~2.
+%
+This implies that the secondary re-adaptation of L6/L9/L10 to human hosts
+involved minimal clade-specific genomic innovation.
+%
+Rather than acquiring a new ``human-adapted'' gene set, L6/L9/L10 lineages
+may have simply retained the ancestral repertoire inherited from the
+clade~2\,+\,L6/L9/L10 common ancestor while clade~2 diverged extensively
+during animal adaptation.
+%
+In this view, the ``return to human'' of L6/L9/L10 is less a re-adaptation
+event and more a case of phylogenetic inertia: these lineages never fully
+lost the capacity for human transmission, while clade~2 accumulated the
+mutations that restricted it to animal hosts.
+
+\subsection{Grand-clade synapomorphies and the reference-bias limitation}
+\label{sec:disc:clade_sig}
+
+The phylogenetic clade signature analysis reveals a striking asymmetry: the
+grand clade (L5 + animal lineages + L6/L9/L10) is defined by 10~robust
+synapomorphies, while the strict human clade (L1--L4--L7) yields none.
+%
+This asymmetry is not biological but methodological: SNP calling against
+the L4-derived H37Rv reference genome means that positions where L4 carries
+a derived allele appear as wild-type and are invisible to variant detection.
+%
+A future analysis using an outgroup reference (e.g., \textit{M.~canettii})
+or an imputed ancestral reference \cite{Malaga2024} would likely reveal a
+symmetric set of derived characters on the strict-human branch.
+
+The 10~grand-clade synapomorphies are functionally striking, with 70\%
+(3~frameshifts + 4~non-conservative missense) predicted to affect protein
+function.
+%
+The \textit{ald} (Rv2780) frameshift disrupts L-alanine dehydrogenase, a
+key enzyme in nitrogen metabolism whose activity is critical during
+dormancy and the transition between active replication and non-replicating
+persistence states \cite{Hutter2004}.
+%
+The \textit{cyp142} (Rv3518c) frameshift affects a cytochrome~P450 involved
+in host cholesterol catabolism, a pathway essential for intracellular survival
+\cite{Johnston2010}; its disruption at the base of the grand clade
+suggests an early metabolic shift away from cholesterol-dependent energy
+production.
+%
+\textit{birA} p.D211N (Rv3279c) modifies the biotin protein
+ligase/transcriptional repressor, potentially altering biotin homeostasis
+and its downstream regulation of lipid biosynthesis \cite{Dey2010}.
+%
+\textit{vapC48} p.G34R (Rv3697c) affects a toxin component of the
+toxin--antitoxin system implicated in persistence and dormancy regulation.
+
+The 14~L6/L9/L10-exclusive SPDIs represent the molecular signatures
+acquired during secondary human re-adaptation.
+%
+Among these, the \textit{stp} (Rv2333c) frameshift disrupts a
+serine/threonine phosphatase that regulates cell-division and virulence
+signalling \cite{Bach2008}, and \textit{Csm6} (Rv2818c) p.Q304* truncates
+a CRISPR-associated RNase, potentially altering the CRISPR defence system
+of these lineages.
+%
+The small number of L6/L9/L10-exclusive variants (14 SPDIs) compared to
+the animal-differentiating core (904 SPDIs) reflects the relatively recent
+secondary adaptation event and the minimal genomic modifications required
+for the animal-to-human host transition.
+
+The 192~L5-specific SPDIs confirm the long independent evolution of L5
+since its divergence from the rest of the grand clade.
+%
+This massive private variant repertoire, combined with its basal
+phylogenetic position, its restricted geographic distribution in West
+Africa \cite{Gehre2013}, and its sharing of all 10~grand-clade
+synapomorphies, firmly anchors L5 as a relictual lineage that preserves
+the ancestral state of the grand-clade branch while having accumulated
+extensive lineage-specific modifications during its independent evolution.
+
+\subsection{Limitations}
+\label{sec:disc:limits}
+
+A key limitation of the per-species analyses concerns the unequal sampling depth
+across animal lineages.
+%
+While \Msur{} is represented by 17 genomes and \Mdas{} by 7, both \Mmun{} and
+\Mchi{} are each represented by a single sequenced genome, yielding 2{,}190 and
+2{,}486 SPDIs respectively.
+%
+For single-genome lineages, all variants of the sequenced strain are treated as
+fixed, without the ability to distinguish truly fixed mutations from within-lineage
+polymorphisms.
+%
+This inflates SPDI counts by an estimated factor of $\times1.11$ (Mungi) and
+$\times1.26$ (Chimpanzé) relative to the multi-genome Suricattae core.
+%
+Crucially, 61.9\% of Mungi SPDIs and 53.4\% of Chimpanzé SPDIs are independently
+confirmed in the Suricattae genome set, and a sensitivity analysis restricting the
+animal group to \Msur{} and \Mdas{} retains 100\% (904/904) of the animal-differentiating
+core SPDIs.
+%
+The major biological signals reported here --- PE/PPE enrichment, PKS/PDIM pathway
+divergence, and absence of ESX LoF --- are therefore robust to the inclusion or
+exclusion of single-genome lineages.
+%
+Species-level conclusions for \Mmun{} and \Mchi{}, including dN/dS proxy values and
+lineage-specific LoF mutations (e.g.\ \textit{pks7}~p.Q1265* in \Mchi{}),
+should be interpreted with caution pending additional genomes from these lineages.
+
+A second, more fundamental limitation concerns the asymmetric sampling depth
+between the secondarily human-adapted clade ($n = 1{,}132$) and the animal
+clade ($n = 26$).
+%
+The core genome (intersection) shrinks monotonically with sample size: a
+rarefaction analysis subsampling L6/L9/L10 strains to $n = 26$ (matching the
+animal sampling depth) yields a core of $\sim$1{,}400~SPDIs (vs 402 at full
+depth), with $\sim$279~L6/L9/L10-exclusive SPDIs (vs 14) and only
+$\sim$175~animal-differentiating SPDIs (vs 910).
+%
+The asymmetry between animal-differentiating (904) and secondarily human-adapted
+exclusive (14) SPDIs reported in the main analysis therefore reflects
+\emph{sampling depth} rather than true biological asymmetry in evolutionary
+tempo.
+%
+At equal sampling depth ($n = 26$ each), the ratio would approach
+$\sim$175:279 in favour of the secondarily human-adapted clade, suggesting
+that --- if anything --- L6/L9/L10 lineages harbour more private variation
+than the animal clade when measured fairly.
+%
+The functional conclusions of this study (PE/PPE enrichment, PKS/PDIM
+remodelling, ESX conservation, convergent evolution, clade synapomorphies) are
+robust to this bias, as they rely on the \emph{identity} and functional
+annotation of variants rather than on raw counts. Nevertheless, all
+quantitative comparisons of exclusive SPDI counts between clades with
+unequal sampling depths should be interpreted with this caveat in mind.
+
+Despite the extensive genomic divergence documented here, cross-referencing
+the animal-differentiating core against the WHO 2022 drug resistance catalogue
+revealed no variant classified as resistance-associated (Grades~1--2).
+All 29~SPDIs falling within canonical DR loci are synonymous, lineage
+markers, or Grade~4 (not associated). This negative result is
+practically relevant: it confirms that standard molecular drug
+susceptibility testing targets remain applicable to animal-adapted
+MTBC lineages, and that animal-clade polymorphisms such as
+\textit{katG}~R463L or \textit{gyrA}~S95T should not be misinterpreted
+as resistance markers in veterinary or One Health surveillance contexts.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Conclusion}
+\label{sec:conclusion}
+
+This study fundamentally revises our understanding of MTBC evolution through
+the discovery of complex multi-host evolution involving secondary human
+adaptation. Based on comprehensive phylogenetic analysis supported by
+\num{274800} whole-genome sequences, we demonstrate that the traditional
+model of simple animal-human bifurcation is incorrect. Instead, MTBC evolution
+involves multiple host-jumping events, with lineages L6, L9, and L10 representing
+secondarily human-adapted lineages that evolved from animal-adapted intermediates
+rather than constituting basal human lineages as previously assumed.
+%
+This phylogenetic breakthrough, supported by convergent evidence from molecular
+signatures, temporal calibration, and geographic distribution patterns,
+establishes a new evolutionary framework where the primarily animal-adapted
+clade (characterised by 904 differentiating variants, 23 truly exclusive) and the
+secondarily human-adapted lineages (14 exclusive variants at full depth,
+noting sampling-depth bias; Section~\ref{sec:disc:limits})
+represent distinct evolutionary solutions to host specialization.
+%
+Among the functional systems most diverged from human MTBC, four emerge as
+primary axes of host-range differentiation: the PE/PPE gene family, which is
+significantly enriched for animal-differentiating mutations and convergently diversified
+across all four independent lineages; the PKS/PDIM lipid biosynthesis pathway,
+whose central phthiocerol-synthesis module is remodelled without loss of function
+while auxiliary PKS enzymes are progressively shed; the type-VII ESX
+secretion systems, which maintain strict functional integrity in both ecotypes
+but undergo non-overlapping missense divergence, with ESX-5 and its PE/PPE cargo
+preferentially targeted in the animal clade and ESX-1 and ESX-3 scaffold
+components diverging in human lineages; and insertion sequence (IS) element
+activity, which shows a 25-fold enrichment in animal lineages (2.1\% vs 0.0\%),
+with IS6110 preferentially targeting the \textit{PPE55} locus and contributing
+to ongoing genomic instability in animal-adapted ecotypes.
+
+The convergent evolution analysis provides particularly strong evidence for the
+role of lipid metabolism as an adaptive axis: 333 genes (8.3\% of the genome),
+dominated by polyketide synthase family members, carry independent mutations
+in all four animal lineages---representing the largest documented convergent
+gene set in bacterial pathogen evolution. This exceptional scale of convergence,
+with dN/dS proxies consistent with positive selection in
+the PDIM core synthases alongside relaxed purifying selection in auxiliary PKS
+enzymes.
+%
+The 10~grand-clade synapomorphies --- including frameshifts in \textit{ald}
+and \textit{cyp142} --- provide robust phylogenetic markers defining the
+deepest intra-MTBC split after the root divergence. The 14~L6/L9/L10-exclusive
+SPDIs, including the \textit{stp} frameshift and \textit{Csm6} Q304*
+nonsense, mark the molecular events of secondary human re-adaptation.
+The absence of detectable synapomorphies for the strict human clade reflects
+the inherent reference bias of H37Rv-based variant calling, a methodological
+limitation that should be addressed in future studies using outgroup-rooted
+ancestral-state reconstruction.
+%
+The inter-clade comparison reveals that the two animal clades share no
+exclusive genomic identity beyond the grand-clade ancestral background:
+their 2 and 23 truly exclusive synapomorphies target entirely
+non-overlapping gene sets, demonstrating that animal host adaptation is
+phenotypically convergent but genomically divergent.
+%
+Furthermore, the clade~2\,+\,L6/L9/L10 sister relationship is defined by
+12~node synapomorphies (including \textit{eccB3} and \textit{plsB2}), while
+L6/L9/L10 itself possesses only 4~truly exclusive SPDIs, suggesting that
+secondary human re-adaptation required remarkably little genomic innovation.
+%
+The discovery of secondary human adaptation has profound implications for
+tuberculosis epidemiology, surveillance, and control strategies. Secondarily
+adapted lineages may retain hybrid transmission characteristics, exhibit
+altered zoonotic potential, and require specialized therapeutic approaches
+that account for their unique evolutionary history. The demonstrated capacity
+for bidirectional host-jumping fundamentally challenges traditional
+unidirectional spillover models and necessitates revised risk assessment
+frameworks that consider the potential for complex multi-host transmission
+cycles in contemporary epidemiological contexts.
+
+Beyond its immediate implications for MTBC research, this study establishes
+a new paradigm for understanding bacterial pathogen evolution that extends
+far beyond tuberculosis. The demonstration that animal-adapted lineages can
+successfully re-adapt to human transmission through convergent molecular
+mechanisms provides a crucial framework for predicting and monitoring emerging
+infectious diseases. The evolutionary plasticity revealed here, operating
+across tens of thousands of years and involving multiple independent host-switching
+events, highlights the remarkable capacity of bacterial pathogens to respond
+to changing ecological pressures through recurrent adaptation and counter-adaptation.
+
+Several avenues remain open.
+%
+The single-genome representation of \Mmun{} and \Mchi{} is the principal
+limitation of the present study; while our robustness analysis confirms that
+the core findings are not driven by these singleton sequences, the
+lineage-specific signals for these two species --- including the \textit{pks7}
+p.Q1265* nonsense in \Mchi{} and the highest dN/dS proxy values in \Mmun{}
+--- require validation against additional genomes.
+%
+Functional characterisation of the key variants identified here, in particular
+the EccC3 D1146N substitution in the ESX-3 ATPase, the multiple PPE55 missense
+cluster, and the \textit{ald} and \textit{cyp142} frameshifts in the grand
+clade, would substantially
+advance our mechanistic understanding of how secretion systems and
+surface-lipid remodelling underlie the host-range boundaries within the MTBC.
+Recent mechanistic studies demonstrating that PDIM lipids inhibit autophagy
+\cite{Mittal2024} and are required for starvation-induced antibiotic tolerance
+\cite{Block2023} provide functional context for the PKS pathway modifications
+observed here.
+%
+The novel discoveries reported here have immediate translational applications.
+The 10~grand-clade synapomorphies, 12~clade~2\,+\,L6/L9/L10 node markers,
+and 4~truly L6/L9/L10-exclusive SPDIs provide molecular markers for
+phylogenetic clade assignment and ecotype differentiation in diagnostic
+settings, while the \textit{PPE55} IS6110
+hotspot offers insights into ongoing genomic instability patterns that could
+inform epidemiological predictions. The exceptional scale of
+convergent evolution (333 genes) suggests that animal-adapted MTBC lineages
+experience unusually strong and consistent selective pressures, potentially
+enabling prediction of adaptive trajectories in emerging animal strains.
+%
+More broadly, the analytical framework developed here --- combining core SPDI
+intersections, pathway-level dN/dS proxies, IS element activity quantification,
+and convergent-evolution decomposition at scale --- provides a reusable template for comparative
+genomic studies of host adaptation in other obligate bacterial pathogens.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\appendix
+
+\section{Supplementary Tables}
+\label{sec:supp_tables}
+
+\begin{table}[h!]
+\centering
+\caption{Group composition and genome counts.}
+\label{tab:groups}
+\begin{tabular}{llrl}
+\toprule
+Group & Lineage(s) & $n$ genomes & Role \\
+\midrule
+Animal clade     & \textit{M.~suricattae}    & 17   & Main animal group \\
+                 & \textit{M.~dassievlei}    & 7    & \\
+                 & \textit{M.~mungi}         & 1    & \\
+                 & \textit{M.~chimpanzae}    & 1    & \\
+Second.\ human-adapted      & L6                        & 1089 & Comparison \\
+                 & L9                        & 40   & \\
+                 & L10                       & 3    & \\
+Strict human     & L1--L4, L7                & $5\times$sub-lin + 81 & Comparison \\
+L5               & L5                        & 443  & Outgroup \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Core SPDI summary by group.}
+\label{tab:core_summary}
+\begin{tabular}{lrr}
+\toprule
+Category & SPDIs & Genes \\
+\midrule
+Animal clade core               & 1292 & 565 \\
+Animal-differentiating (vs second.\ human) & 904  & 486 \\
+\quad of which truly animal-exclusive & 23 & 20 \\
+\quad of which ancestral (in \textit{canettii}) & 616 & --- \\
+Ancestral (animal $\cap$ second.\ human) & 388 & 293 \\
+Clade~2\,+\,L6/L9/L10 node synapomorphies & 12 & 10 \\
+Second.\ human-adapted exclusive & 14   & 14 \\
+\quad of which truly L6/L9/L10-only & 4 & 4 \\
+Second.\ human absent all animal & 9    & 9 \\
+Grand-clade synapomorphies (sig.\ C) & 10 & 8 \\
+L5-specific (sig.\ D)          & 192  & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Animal-differentiating SPDIs in ESX type-VII secretion systems.}
+\label{tab:esx}
+\begin{tabular}{llllll}
+\toprule
+System & Gene & Effect & AA change & Predicted role & LoF \\
+\midrule
+ESX-1 & espA  & missense  & T192I & Secreted effector & No \\
+ESX-1 & espD  & synonymous & G20G  & Effector secretion & No \\
+ESX-1 & espJ  & synonymous & G243G & Effector modulation & No \\
+ESX-1 & espK  & missense  & C729S & Effector modulation & No \\
+ESX-1 & espK  & missense  & S194F & Effector modulation & No \\
+\midrule
+ESX-2 & eccA2 & synonymous & A189A & ATPase component & No \\
+ESX-2 & eccE2 & synonymous & Y291Y & Membrane component & No \\
+ESX-2 & esxD  & missense  & T49A  & Secreted substrate  & No \\
+\midrule
+ESX-3 & eccA3 & missense  & E6A   & ATPase component & No \\
+ESX-3 & eccA3 & synonymous & A384A & ATPase component & No \\
+ESX-3 & eccC3 & missense  & D1146N & Core ATPase & No \\
+ESX-3 & PPE4  & synonymous & A185A & PE/PPE substrate & No \\
+\midrule
+ESX-4 & eccC4 & missense  & S1082G & Core ATPase & No \\
+ESX-4 & mycP4 & synonymous & I158I & Mycosin protease & No \\
+ESX-4 & eccB4 & synonymous & G417G & Channel component & No \\
+\midrule
+ESX-5 & eccB5 & missense  & R41H  & Channel component & No \\
+ESX-5 & eccB5 & synonymous & P499P & Channel component & No \\
+ESX-5 & eccC5 & synonymous & S1204S & Core ATPase & No \\
+ESX-5 & eccD5 & missense  & G261D & Membrane component & No \\
+ESX-5 & esxK  & synonymous & N39N  & PE/PPE secretion & No \\
+ESX-5 & esxL  & missense  & A12D  & PE/PPE secretion & No \\
+ESX-5 & esxL  & synonymous & A68A  & PE/PPE secretion & No \\
+ESX-5 & esxO  & missense  & G22A  & PE/PPE secretion & No \\
+ESX-5 & esxO  & synonymous & A83A  & PE/PPE secretion & No \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Main Figures}
+\label{sec:main_figs}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{../figures/phylo_tree_english.png}
+\caption{Phylogenetic relationships of MTBC animal and human lineages. Simplified tree showing the major evolutionary split between animal-adapted lineages (red), secondarily human-adapted lineages (teal), and modern human lineages (blue). The tree illustrates the fundamental animal-human divergence that underlies differential genomic adaptation patterns.}
+\label{fig:phylo}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{../figures/functional_enrichment_english.png}
+\caption{Functional enrichment comparison across MTBC lineage groups. Bar plots showing gene counts by functional category for animal-differentiating (red), secondarily human-adapted exclusive (teal), and ancestral core (blue) variants. Animal lineages show significant enrichment for PE/PPE proteins and lipid metabolism (***p < 0.001).}
+\label{fig:enrichment}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{../figures/lof_comparison.png}
+\caption{Loss-of-function mutation comparison across lineage groups. Bar chart showing counts of nonsense, frameshift, and start-loss mutations. Animal lineages exhibit higher LoF burden, particularly in PE/PPE and metabolic genes.}
+\label{fig:lof}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{../figures/pks_pdim_overview.png}
+\caption{PKS/PDIM pathway overview showing differential remodeling in animal vs human lineages. (A) Pathway schematic, (B) Mutation distribution across pathway components, (C) dN/dS proxy values indicating selection pressure, (D) Species-specific LoF patterns.}
+\label{fig:pks_overview}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{../figures/pks_pdim_pathway_map.png}
+\caption{Detailed PKS/PDIM biosynthetic pathway map. Enzymatic steps from fatty acid precursors to final PDIM products, with mutation counts and effect types overlaid on each gene. Red indicates high mutation burden.}
+\label{fig:pks_pathway}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{../figures/convergence_english.png}
+\caption{Convergent evolution scale and functional patterns in animal MTBC lineages. (A) Number of genes showing convergent mutations across 4, 3, or 2 animal species, representing 8.3\% of the MTBC genome. (B) Top functional categories of convergent genes, dominated by PKS lipid synthesis and PE/PPE proteins.}
+\label{fig:convergence}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{../figures/is_activity_english.png}
+\caption{Differential IS element activity between animal and human MTBC lineages. (A) IS activity comparison showing 25-fold higher insertion rate in animal lineages (2.1\% vs 0.0\%). (B) IS element type breakdown in animal lineages, with IS6110 dominance and PPE55 hotspot representing 68.4\% of total activity.}
+\label{fig:is_activity}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{../figures/functional_categories_comparison.png}
+\caption{Mycobrowser functional category distribution across SPDI groups. Stacked bar chart showing the proportion of each Mycobrowser functional category (intermediary metabolism \& respiration, cell wall \& cell processes, conserved hypotheticals, lipid metabolism, PE/PPE, etc.) for each comparative group: animal-differentiating (904), L6/L9/L10-exclusive (14), core ancestral (388), and other intersection sets. Note the elevated PE/PPE and lipid metabolism fractions in the animal-differentiating core relative to all other groups.}
+\label{fig:functional_categories}
+\end{figure}
+
+\section{Supplementary Figures}
+\label{sec:supp_figs}
+
+\noindent Supplementary figures include:
+\begin{itemize}
+  \item Figure S1 --- Functional category distribution (absolute counts)
+  \item Figure S2 --- Chromosome plot of animal-differentiating SPDIs
+  \item Figure S3 --- Gene heatmap (top mutated genes per group)
+  \item Figure S4 --- KEGG enrichment bubble plots (animal vs.\ ancestral; animal vs.\ basal)
+  \item Figure S5 --- Per-species UpSet plot of SPDI overlaps
+  \item Figure S6 --- Per-species dN/dS proxy distribution
+  \item Figure S7 --- Robustness analysis (Jaccard similarity, containment matrix)
+  \item Figure S8 --- PKS/PDIM pathway map (all species combined)
+  \item Figure S9 --- LoF detail for convergently pseudogenised PKS genes
+\end{itemize}
+
+\end{document}
